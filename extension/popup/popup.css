@@ -1,0 +1,299 @@
+:root {
+  --bg: #ffffff;
+  --fg: #1c1917;
+  --ink-2: #44403c;
+  --muted: #78716c;
+  --faint: #a8a29e;
+  --line: #e7e5e4;
+  --soft: #f5f5f4;
+  --card: #f7f6f4;
+  --chip: #f0efed;
+  --accent: #0f766e;
+  --on-accent: #ffffff;
+  --jp: #0f766e;
+  --hanzi: "Microsoft JhengHei", "PingFang TC", "Noto Sans TC", sans-serif;
+  --shadow-press: 0 1px 2px rgb(28 25 23 / 0.1);
+
+  /* Motion, shared with video-to-lesson: a press pushes a control in quickly and lets it
+     spring back (the press rule below); a chosen option's chip slides across. Each pressable
+     control's transition lists var(--press-motion), which the press rule swaps for the quick
+     way in. */
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-spring: cubic-bezier(0.3, 1.5, 0.6, 1);
+  --press-motion: scale 280ms var(--ease-spring);
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1c1917;
+    --fg: #f5f5f4;
+    --ink-2: #d6d3d1;
+    --muted: #a8a29e;
+    --faint: #78716c;
+    --line: #35302c;
+    --soft: #252120;
+    --card: #23201e;
+    --chip: #2c2826;
+    --accent: #2dd4bf;
+    --on-accent: #042f2e;
+    --shadow-press: 0 1px 2px rgb(0 0 0 / 0.45);
+    color-scheme: dark;
+  }
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+
+body {
+  width: 368px;
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  /* The variable Segoe UI first, so Chrome and Firefox both get the medium label weight. */
+  font: 13px/1.4 "Segoe UI Variable Text", "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+
+a { color: inherit; }
+
+button, .switch, .swatch, .custom {
+  -webkit-tap-highlight-color: transparent;
+  transition: var(--press-motion);
+}
+
+/* Pressing pushes a control in: it shrinks a little, quickly, and springs back when let go.
+   --press says how far; small targets go further so it shows. */
+@media (prefers-reduced-motion: no-preference) {
+  button:not(:disabled):active,
+  .switch:active,
+  .swatch:active,
+  .custom:active {
+    --press-motion: scale 70ms ease-out;
+    scale: var(--press, 0.97);
+  }
+}
+
+/* header */
+.top { display: flex; align-items: center; gap: 12px; padding: 16px 16px 12px; }
+.logo {
+  display: grid; place-items: center; flex: none;
+  width: 36px; height: 36px; border-radius: 10px;
+  background: var(--accent); color: var(--on-accent);
+  font: 600 19px/1 var(--hanzi);
+}
+h1 { margin: 0; font-size: 15px; font-weight: 650; line-height: 1.25; }
+.status { margin: 1px 0 0; min-height: 17px; color: var(--muted); font-size: 12.5px; }
+
+/* "Allow" on the This site row, when Firefox hasn't been given access to the site yet */
+.allow {
+  flex: none; padding: 5px 14px; border-radius: 8px; cursor: pointer;
+  border: 0; background: var(--accent); color: var(--on-accent);
+  font: inherit; font-size: 12.5px; font-weight: 600;
+  transition: var(--press-motion), box-shadow 150ms;
+}
+.allow:active { box-shadow: var(--shadow-press); }
+.allow:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+#site-row label { cursor: pointer; }
+
+/* specimen: a sample of each reading, with its switch at the end of its row */
+.specimen {
+  display: grid;
+  grid-template-columns: auto auto 1px 1fr auto;
+  align-items: center;
+  column-gap: 16px; row-gap: 6px;
+  margin: 0 16px; padding: 14px 16px;
+  border: 1px solid var(--line); border-radius: 14px;
+  background: var(--card);
+}
+.divider { grid-column: 3; grid-row: 1 / span 3; align-self: stretch; background: var(--line); }
+.hz { font: 400 30px/1.1 var(--hanzi); }
+.py { color: var(--muted); font-size: 14px; }
+.jp { color: var(--jp); font-size: calc(14px * var(--scale, 0.9)); white-space: nowrap; }
+.py, .jp { transition: opacity 0.2s var(--ease-out); }
+.specimen [data-row].off { opacity: 0.2; }
+.jp[data-tones="color"] [data-tone="1"] { color: #d1495b; }
+.jp[data-tones="color"] [data-tone="2"] { color: #e07a1f; }
+.jp[data-tones="color"] [data-tone="3"] { color: #2a9d58; }
+.jp[data-tones="color"] [data-tone="4"] { color: #2f6fd6; }
+.jp[data-tones="color"] [data-tone="5"] { color: #8e5cc9; }
+.jp[data-tones="color"] [data-tone="6"] { color: #6b7280; }
+/* The chosen colour is for light pages; lift it so the sample stays readable here. */
+@media (prefers-color-scheme: dark) {
+  .jp, .c-jp { color: color-mix(in srgb, var(--jp) 60%, white); }
+}
+.toggle-label { justify-self: end; color: var(--ink-2); font-size: 13.5px; font-weight: 500; cursor: pointer; }
+
+/* switch: the thumb stretches while held, then slides */
+.switch {
+  position: relative; display: inline-block; flex: none;
+  --w: 38px; --h: 22px; --knob: 18px;
+  width: var(--w); height: var(--h);
+  --press: 0.94;
+}
+.switch.big { --w: 46px; --h: 26px; --knob: 22px; }
+.switch input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; z-index: 1; }
+.track {
+  position: absolute; inset: 0; border-radius: calc(var(--h) / 2);
+  background: var(--line); transition: background-color 200ms var(--ease-out);
+}
+.track::after {
+  content: ""; position: absolute; top: 2px; left: 2px;
+  width: var(--knob); height: var(--knob); border-radius: calc(var(--knob) / 2);
+  background: #fff; box-shadow: 0 1px 3px rgb(0 0 0 / 0.25);
+  transition: translate 260ms var(--ease-spring), width 160ms var(--ease-out);
+}
+.switch input:checked + .track { background: var(--accent); }
+.switch input:checked + .track::after { translate: calc(var(--w) - var(--knob) - 4px) 0; }
+@media (prefers-reduced-motion: no-preference) {
+  .switch input:active + .track::after { width: calc(var(--knob) + 5px); }
+  .switch input:checked:active + .track::after { translate: calc(var(--w) - var(--knob) - 9px) 0; }
+}
+.switch input:focus-visible + .track { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* settings rows */
+.settings { padding: 12px 16px 8px; }
+.row { display: flex; align-items: center; gap: 12px; min-height: 44px; }
+label.row { cursor: pointer; }
+.label { flex: 1; color: var(--fg); font-size: 13.5px; font-weight: 500; }
+.note { margin-left: 4px; color: var(--faint); font-size: 11.5px; font-weight: 400; }
+.row.disabled { opacity: 0.4; pointer-events: none; }
+.row { transition: opacity 0.2s var(--ease-out); }
+
+/* A row's explanation: a small bubble that rises in above the row after a short pause,
+   and leaves at once. Also shown when the row's switch has keyboard focus. */
+.row[data-tip] { position: relative; }
+.row[data-tip]::after {
+  content: attr(data-tip);
+  position: absolute; z-index: 10; left: 44px; bottom: calc(100% - 4px);
+  width: max-content; max-width: 260px; padding: 8px 11px; border-radius: 9px;
+  background: var(--fg); color: var(--bg);
+  font-size: 12px; font-weight: 400; line-height: 1.45;
+  box-shadow: 0 8px 24px -8px rgb(0 0 0 / 0.35);
+  opacity: 0; translate: 0 4px; pointer-events: none;
+  transition: opacity 120ms ease-out, translate 120ms ease-out;
+}
+.row[data-tip]:hover::after,
+.row[data-tip]:has(input:focus-visible)::after {
+  opacity: 1; translate: 0 0;
+  transition: opacity 180ms ease-out 450ms, translate 260ms var(--ease-out) 450ms;
+}
+@media (prefers-reduced-motion: reduce) {
+  .row[data-tip]::after, .row[data-tip]:hover::after { translate: 0 0; }
+}
+
+.icon {
+  display: grid; place-items: center; flex: none;
+  width: 32px; height: 32px; border-radius: 9px;
+  background: var(--chip); color: var(--ink-2);
+}
+.icon svg {
+  width: 18px; height: 18px;
+  fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+}
+.icon svg .fill { fill: currentColor; stroke: none; }
+.icon.text { font-size: 13px; font-weight: 650; letter-spacing: -0.01em; }
+/* A switch turned on pops its row's icon. */
+.icon.pop { animation: pop 380ms var(--ease-spring); }
+@keyframes pop { 40% { scale: 1.18; } }
+@media (prefers-reduced-motion: reduce) { .icon.pop { animation: none; } }
+
+/* segmented choices: one chip slides to the chosen option (placed by popup.js) */
+.seg {
+  position: relative; isolation: isolate;
+  display: inline-flex; padding: 3px; gap: 2px;
+  border-radius: 10px; background: var(--chip);
+}
+.seg button {
+  position: relative; z-index: 1;
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 28px; min-width: 52px; padding: 0 11px;
+  border: 0; border-radius: 8px; background: transparent;
+  color: var(--muted); font: inherit; font-size: 12.5px; font-weight: 500; cursor: pointer;
+  transition: color 200ms var(--ease-out);
+  --press: 1; /* the chip slides instead */
+}
+.seg button:hover { color: var(--fg); }
+.seg button[aria-checked="true"] { background: var(--fg); color: var(--bg); }
+.seg button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.seg[data-indicator] button[aria-checked="true"] { background: none; }
+.seg[data-indicator]::after {
+  content: ""; position: absolute; z-index: 0; top: 0; left: 0;
+  width: var(--indicator-w); height: var(--indicator-h);
+  border-radius: 8px; background: var(--fg);
+  translate: var(--indicator-x) var(--indicator-y);
+  transition: translate 280ms var(--ease-out), width 280ms var(--ease-out);
+}
+.seg[data-instant]::after { transition: none; }
+@media (prefers-reduced-motion: reduce) { .seg[data-indicator]::after { transition: none; } }
+.dots { display: inline-flex; gap: 3px; }
+.dots i { width: 7px; height: 7px; border-radius: 50%; }
+.dots i:nth-child(1) { background: #d1495b; }
+.dots i:nth-child(2) { background: #2a9d58; }
+.dots i:nth-child(3) { background: #2f6fd6; }
+
+/* size slider, drawn the same in Chrome and Firefox */
+.range { display: flex; align-items: center; gap: 10px; }
+.range output { width: 34px; text-align: right; color: var(--muted); font-size: 12.5px; font-variant-numeric: tabular-nums; }
+input[type="range"] {
+  -webkit-appearance: none; appearance: none;
+  width: 140px; height: 20px; margin: 0; background: transparent; cursor: pointer;
+}
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 4px; border-radius: 2px;
+  background: linear-gradient(var(--accent), var(--accent)) 0 0 / var(--fill, 50%) 100% no-repeat, var(--line);
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  width: 18px; height: 18px; margin-top: -7px; border-radius: 50%;
+  border: 2.5px solid var(--accent); background: var(--bg); box-sizing: border-box;
+  transition: scale 200ms var(--ease-spring);
+}
+input[type="range"]::-moz-range-track { height: 4px; border-radius: 2px; background: var(--line); }
+input[type="range"]::-moz-range-progress { height: 4px; border-radius: 2px; background: var(--accent); }
+input[type="range"]::-moz-range-thumb {
+  width: 18px; height: 18px; border-radius: 50%;
+  border: 2.5px solid var(--accent); background: var(--bg); box-sizing: border-box;
+  transition: scale 200ms var(--ease-spring);
+}
+@media (prefers-reduced-motion: no-preference) {
+  input[type="range"]:active::-webkit-slider-thumb { scale: 1.2; }
+  input[type="range"]:active::-moz-range-thumb { scale: 1.2; }
+}
+input[type="range"]:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+
+/* colour swatches */
+.swatches { display: flex; align-items: center; gap: 8px; }
+.swatch, .custom {
+  width: 20px; height: 20px; padding: 0; border: 0; border-radius: 50%; cursor: pointer;
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.12);
+  transition: var(--press-motion), box-shadow 200ms var(--ease-out);
+  --press: 0.82;
+}
+.swatch[aria-checked="true"], .custom.selected { box-shadow: 0 0 0 2.5px var(--bg), 0 0 0 4.5px var(--fg); }
+.swatch:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+.custom {
+  position: relative; overflow: hidden;
+  background: conic-gradient(#d1495b, #e07a1f, #2a9d58, #2f6fd6, #8e5cc9, #d1495b);
+}
+.custom input { position: absolute; inset: -4px; opacity: 0; cursor: pointer; }
+
+/* corrections */
+.corrections { margin: 4px 16px 0; padding: 10px 0 4px; border-top: 1px solid var(--line); }
+.corrections h2 { margin: 0 0 4px; font-size: 12.5px; font-weight: 600; color: var(--muted); }
+.corrections ul { list-style: none; margin: 0; padding: 0; max-height: 128px; overflow-y: auto; }
+.corrections li { display: flex; align-items: baseline; gap: 8px; min-height: 28px; }
+.c-hz { font: 15px/1.2 var(--hanzi); }
+.c-py { color: var(--faint); font-size: 12px; }
+.c-jp { margin-left: auto; color: var(--jp); }
+.corrections button {
+  border: 0; background: none; color: var(--faint); cursor: pointer;
+  font-size: 16px; line-height: 1; padding: 3px 6px; border-radius: 6px;
+  transition: var(--press-motion), background-color 150ms, color 150ms;
+  --press: 0.85;
+}
+.corrections button:hover { color: var(--fg); background: var(--soft); }
+.corrections button:focus-visible { outline: 2px solid var(--accent); }
+
+footer { margin: 4px 16px 0; padding: 10px 0 12px; border-top: 1px solid var(--line); font-size: 11.5px; color: var(--faint); }
+footer a { text-decoration: none; }
+footer a:hover { color: var(--fg); text-decoration: underline; }

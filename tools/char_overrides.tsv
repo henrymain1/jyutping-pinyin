@@ -1,0 +1,20 @@
+# Per-character fixes for build_data.py, applied before the word statistics.
+# chars (trad,simp)	mandarin syllable	cantonese readings, best first
+# Only add rows where the generated data/canto.txt picks the wrong reading.
+會,会	hui4	wui5,wui6,wui2
+會,会	kuai4	kui2,wui6
+數,数	shuo4	sok3
+便	pian2	pin4
+參,参	cen1	cam1
+正	zheng1	zing1
+應,应	ying1	jing1,jing3
+空	kong4	hung3,hung1
+解	xie4	haai6,gaai2
+倒	dao4	dou3,dou2
+奇	ji1	gei1
+漂	piao4	piu3,piu1
+盛	cheng2	sing4
+縫,缝	feng4	fung6,fung2
+鮮,鲜	xian3	sin2
+供	gong4	gung3
+和	hu2	wu4

@@ -1,0 +1,10 @@
+canto.txt is derived from CC-Canto and the CC-CEDICT Cantonese readings
+(https://cantonese.org), Copyright (c) 2015-17 Pleco Inc.
+
+It is distributed under the Creative Commons Attribution-ShareAlike 3.0 license:
+http://creativecommons.org/licenses/by-sa/3.0/
+
+Changes from the original: per-character readings are re-ranked by the Mandarin
+reading they pair with (inferred from multi-character words, plus a few manual
+fixes in tools/char_overrides.tsv), definitions are dropped, and words whose
+reading can be rebuilt from their characters are left out.
