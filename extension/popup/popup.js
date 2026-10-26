@@ -33,6 +33,7 @@ function render() {
   $('#showJyutping').checked = settings.showJyutping;
   for (const el of document.querySelectorAll('[data-row="pinyin"]')) el.classList.toggle('off', !settings.showPinyin);
   for (const el of document.querySelectorAll('[data-row="jyutping"]')) el.classList.toggle('off', !settings.showJyutping);
+  for (const el of document.querySelectorAll('[data-row="colloquial"]')) el.classList.toggle('off', !settings.showColloquial);
   // Position only matters while both are shown.
   $('#layout-row').classList.toggle('disabled', !(settings.showPinyin && settings.showJyutping));
 
@@ -56,6 +57,7 @@ function render() {
   $('#custom-color').value = color;
 
   $('#showAlternates').checked = settings.showAlternates;
+  $('#showColloquial').checked = settings.showColloquial;
   $('#speakOnClick').checked = settings.speakOnClick;
   $('#voice-status').hidden = !(settings.speakOnClick && voiceMissing);
 
@@ -141,6 +143,10 @@ function bindControls() {
   $('#showAlternates').addEventListener('change', (e) => {
     pop(e.target);
     save({ showAlternates: e.target.checked });
+  });
+  $('#showColloquial').addEventListener('change', (e) => {
+    pop(e.target);
+    save({ showColloquial: e.target.checked });
   });
   $('#speakOnClick').addEventListener('change', (e) => {
     pop(e.target);

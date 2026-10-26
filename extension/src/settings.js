@@ -17,6 +17,7 @@
       color: '#0f766e',
       scale: 90, // percent of the pinyin's font size
       showAlternates: true,
+      showColloquial: true, // everyday Cantonese words under Mandarin ones (是 → 係)
       speakOnClick: true,
       offSites: [], // origins the user switched it off for, e.g. "https://example.com"
     },

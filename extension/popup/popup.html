@@ -15,21 +15,23 @@
   </header>
 
   <section class="specimen" aria-label="What to show">
-    <span class="hz">行</span>
+    <span class="hz">看</span>
     <span class="hz">銀行</span>
     <span class="divider" aria-hidden="true"></span>
     <span></span>
     <span></span>
 
-    <span class="py" data-row="pinyin">xíng</span>
+    <span class="py" data-row="pinyin">kàn</span>
     <span class="py" data-row="pinyin">yínháng</span>
     <label class="toggle-label" for="showPinyin" id="pinyin-toggle">Pinyin</label>
     <span class="switch big"><input type="checkbox" role="switch" id="showPinyin"><span class="track"></span></span>
 
-    <span class="jp" data-row="jyutping" data-reading="hang4"></span>
+    <span class="jp" data-row="jyutping" data-reading="hon3"></span>
     <span class="jp" data-row="jyutping" data-reading="ngan4 hong4"></span>
     <label class="toggle-label" for="showJyutping" id="jyutping-toggle">Jyutping</label>
     <span class="switch big"><input type="checkbox" role="switch" id="showJyutping"><span class="track"></span></span>
+
+    <span class="word-tag" data-row="colloquial"><span class="word-hz">睇</span><span class="jp" data-reading="tai2"></span></span>
   </section>
 
   <section class="settings">
@@ -93,6 +95,14 @@
       </span>
       <span class="label">Other readings</span>
       <span class="switch"><input type="checkbox" role="switch" id="showAlternates"><span class="track"></span></span>
+    </label>
+
+    <label class="row" data-tip="Some everyday Mandarin words are said differently in Cantonese. This shows the Cantonese word under them: 是 → 係 hai6, 看 → 睇 tai2.">
+      <span class="icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M5 5.5h14a1.5 1.5 0 0 1 1.5 1.5v8a1.5 1.5 0 0 1-1.5 1.5h-8.5l-4.5 3.5v-3.5H5A1.5 1.5 0 0 1 3.5 15V7A1.5 1.5 0 0 1 5 5.5z"/><path d="M8 10h8M8 13h5"/></svg>
+      </span>
+      <span class="label">Cantonese words</span>
+      <span class="switch"><input type="checkbox" role="switch" id="showColloquial"><span class="track"></span></span>
     </label>
 
     <label class="row" id="hear-row">

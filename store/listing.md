@@ -33,6 +33,8 @@ Firefox "Description" (Markdown allowed; the first 250 characters carry the main
 >
 > Two switches choose what you see: pinyin, jyutping, both, or neither. Turn pinyin off and jyutping takes its place, for Cantonese-only reading.
 >
+> Where spoken Cantonese uses a different word, a small tag shows it (看 → 睇 tai2, 是 → 係 hai6), so you pick up the words Cantonese speakers say.
+>
 > You can also:
 >
 > - colour each syllable by its tone, or show tones as numbers (dung1) or superscripts (dung¹)
@@ -67,9 +69,9 @@ MIT License. The dictionary data inside keeps its own licence (CC BY-SA 3.0), no
 In `store/screenshots/`, 1280 × 800. Upload them in the order 1, 5, 2, 3, 4 so they read as a story: the core idea, other sites, the media reader, replacing pinyin, then the panel. Captions:
 
 1. `1-dictionary.png`: Jyutping under the pinyin in a dictionary entry: 行 xíng → hang4, 行 háng → hong4.
-2. `2-media-reader.png`: Words tapped in a video transcript, each with its Cantonese reading.
+2. `2-media-reader.png`: Words tapped in a video transcript, each with its Cantonese reading, and the everyday Cantonese word where it differs (是 → 係, 看 → 睇).
 3. `3-replace.png`: Pinyin switched off: the jyutping takes its place.
-4. `4-panel.png`: The panel: pinyin and jyutping switches, a switch for the current site, tone style, position, size and colour.
+4. `4-panel.png`: The panel: pinyin and jyutping switches, a switch for the current site, tone style, position, size, colour and Cantonese words.
 5. `5-other-sites.png`: Works on other sites too, here the MDBG dictionary: 銀行 yínháng → ngan4 hong4.
 
 Chrome also wants a small promo tile: `store/screenshots/promo-440x280.png`.

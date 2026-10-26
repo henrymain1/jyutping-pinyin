@@ -1,0 +1,153 @@
+# Everyday Cantonese words for Mandarin ones, shown under the Mandarin word.
+#
+# Columns (tab separated):
+#   1. Mandarin word forms, comma separated (traditional and simplified)
+#   2. Mandarin pinyin, numbered, no spaces; matched without tones, or with tones
+#      when it ends in "!". Empty matches any reading.
+#   3. Cantonese words: "漢字 jyut ping" with an optional "(note)", several joined by " | "
+#
+# Check the Cantonese readings against CC-Canto with: python tools/check_colloquial.py
+
+# Pronouns and pointing words
+是	shi4	係 hai6
+的	de5	嘅 ge3
+他,她,它	ta1	佢 keoi5
+他們,她們,它們,他们,她们,它们	ta1men5	佢哋 keoi5 dei6
+我們,我们,咱們,咱们		我哋 ngo5 dei6
+你們,你们	ni3men5	你哋 nei5 dei6
+這,这	zhe4	呢 ni1
+這個,这个	zhe4ge5	呢個 ni1 go3
+這裡,這兒,这里,这儿		呢度 ni1 dou6
+這些,这些	zhe4xie1	呢啲 ni1 di1
+這樣,这样	zhe4yang4	噉樣 gam2 joeng2
+這麼,这么	zhe4me5	咁 gam3
+那	na4!	嗰 go2
+那個,那个	na4ge5	嗰個 go2 go3
+那裡,那兒,那里,那儿		嗰度 go2 dou6
+那些	na4xie1	嗰啲 go2 di1
+那麼,那么	na4me5	咁 gam3
+
+# Questions
+哪裡,哪兒,哪里,哪儿		邊度 bin1 dou6
+哪個,哪个	na3ge5	邊個 bin1 go3
+誰,谁		邊個 bin1 go3
+什麼,什么	shen2me5	乜嘢 mat1 je5 | 咩 me1
+為什麼,为什么	wei4shen2me5	點解 dim2 gaai2
+怎麼,怎么	zen3me5	點 dim2
+怎麼樣,怎么样	zen3me5yang4	點樣 dim2 joeng2
+怎麼辦,怎么办	zen3me5ban4	點算 dim2 syun3
+什麼時候,什么时候	shen2me5shi2hou5	幾時 gei2 si4
+多少	duo1shao5!	幾多 gei2 do1
+幹什麼,干什么	gan4shen2me5	做乜嘢 zou6 mat1 je5
+
+# Not, yes-or-no
+不	bu4	唔 m4
+沒有,没有	mei2you3	冇 mou5
+沒,没	mei2	冇 mou5
+不是	bu4shi4	唔係 m4 hai6
+不要	bu4yao4	唔好 m4 hou2 (don't)
+不用	bu4yong4	唔使 m4 sai2
+不會,不会	bu4hui4	唔會 m4 wui5
+不知道	bu4zhi1dao4	唔知 m4 zi1
+不能	bu4neng2	唔可以 m4 ho2 ji5
+有沒有,有没有	you3mei2you3	有冇 jau5 mou5
+是不是	shi4bu5shi4	係唔係 hai6 m4 hai6
+要不要	yao4bu5yao4	要唔要 jiu3 m4 jiu3
+好不好	hao3bu5hao3	好唔好 hou2 m4 hou2
+對不對,对不对	dui4bu5dui4	啱唔啱 ngaam1 m4 ngaam1
+
+# Little words
+在	zai4	喺 hai2 (at, in)
+了	le5	咗 zo2 (after a verb)
+和	he2!	同 tung4
+跟	gen1	同 tung4
+也	ye3	都 dou1
+還,还	hai2	仲 zung6
+還是,还是	hai2shi4	定係 ding6 hai6 (or, in questions)
+很	hen3	好 hou2
+很多	hen3duo1	好多 hou2 do1
+一些	yi1xie1	一啲 jat1 di1
+有些	you3xie1	有啲 jau5 di1
+一點兒,一点儿,一點點,一点点		少少 siu2 siu2
+一起	yi1qi3	一齊 jat1 cai4
+但是	dan4shi4	但係 daan6 hai6
+可是	ke3shi4	不過 bat1 gwo3
+
+# Time
+現在,现在	xian4zai4	而家 ji4 gaa1
+剛才,刚才	gang1cai2	頭先 tau4 sin1
+剛剛,刚刚	gang1gang1	啱啱 ngaam1 ngaam1
+今天	jin1tian1	今日 gam1 jat6
+明天	ming2tian1	聽日 ting1 jat6
+昨天	zuo2tian1	琴日 kam4 jat6
+後天,后天	hou4tian1	後日 hau6 jat6
+前天	qian2tian1	前日 cin4 jat6
+早上	zao3shang5	朝早 ziu1 zou2
+晚上	wan3shang5	夜晚 je6 maan5
+中午	zhong1wu3	晏晝 aan3 zau3
+等一下	deng3yi1xia4	等陣 dang2 zan6
+
+# Doing things
+看	kan4	睇 tai2
+說,说	shuo1	講 gong2
+說話,说话	shuo1hua4	講嘢 gong2 je5
+吃	chi1	食 sik6
+喝	he1!	飲 jam2
+吃飯,吃饭	chi1fan4	食飯 sik6 faan6
+走	zou3	行 haang4 (walk)
+跑	pao3	走 zau2 (run)
+給,给	gei3	畀 bei2
+喜歡,喜欢	xi3huan5	鍾意 zung1 ji3
+睡覺,睡觉	shui4jiao4	瞓覺 fan3 gaau3
+穿	chuan1	着 zoek3
+站	zhan4	企 kei5
+找	zhao3	搵 wan2
+拿	na2	攞 lo2
+聊天	liao2tian1	傾偈 king1 gai2
+家	jia1	屋企 uk1 kei2 (home)
+回家	hui2jia1	返屋企 faan1 uk1 kei2
+回來,回来	hui2lai5	返嚟 faan1 lai4
+回去	hui2qu5	返去 faan1 heoi3
+來,来	lai2	嚟 lai4
+洗澡	xi3zao3	沖涼 cung1 loeng4
+下雨	xia4yu3	落雨 lok6 jyu5
+下車,下车	xia4che1	落車 lok6 ce1
+知道	zhi1dao5	知 zi1
+生氣,生气	sheng1qi4	嬲 nau1
+害怕	hai4pa4	驚 geng1
+怕	pa4	驚 geng1
+
+# Describing things
+漂亮	piao4liang5	靚 leng3
+便宜	pian2yi5	平 peng4
+累	lei4!	攰 gui6
+對,对	dui4	啱 ngaam1 (right, correct)
+好吃	hao3chi1	好食 hou2 sik6
+好看	hao3kan4	好睇 hou2 tai2
+
+# Things and people
+東西,东西	dong1xi5!	嘢 je5 (thing)
+衣服	yi1fu5	衫 saam1
+褲子,裤子	ku4zi5	褲 fu3
+鞋子	xie2zi5	鞋 haai4
+杯子	bei1zi5	杯 bui1
+桌子	zhuo1zi5	枱 toi2
+椅子	yi3zi5	櫈 dang3
+雨傘,雨伞	yu3san3	遮 ze1
+房子	fang2zi5	屋 uk1
+孩子	hai2zi5	細路 sai3 lou6
+小孩	xiao3hai2	細路 sai3 lou6
+男孩,男孩子		男仔 naam4 zai2
+女孩,女孩子		女仔 neoi5 zai2
+兒子,儿子	er2zi5	仔 zai2
+水果	shui3guo3	生果 saang1 gwo2
+冰淇淋	bing1qi2lin2	雪糕 syut3 gou1
+冰箱	bing1xiang1	雪櫃 syut3 gwai6
+公車,公车,公共汽車,公共汽车		巴士 baa1 si2
+計程車,计程车,出租車,出租车		的士 dik1 si2
+
+# Set phrases
+謝謝,谢谢	xie4xie5	多謝 do1 ze6 (for a gift) | 唔該 m4 goi1 (for help)
+對不起,对不起	dui4bu5qi3	對唔住 deoi3 m4 zyu6
+沒關係,没关系	mei2guan1xi5	唔緊要 m4 gan2 jiu3
+再見,再见	zai4jian4	拜拜 baai1 baai3

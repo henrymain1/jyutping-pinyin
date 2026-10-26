@@ -29,6 +29,7 @@
   let corrections = {};
   let dict = null;
   let dictPromise = null;
+  let colloquial = null; // everyday Cantonese words (NS.Colloquial)
   let active = false;
   let observer = null;
   let timer = 0;
@@ -123,6 +124,7 @@
       const loaded = new NS.Dictionary(res.text);
       NS.pinyin.setSyllables(loaded.syllables);
       NS.jyutping.setSyllables(loaded.jyutSyllables);
+      if (res.colloquial) colloquial = new NS.Colloquial(res.colloquial);
       return loaded;
     } catch (err) {
       console.warn('[Jyutping] Could not load the dictionary:', err);
@@ -301,13 +303,16 @@
     const result = fromPinyin ? dict.convert(match.hanzi, source.sylls, corrections) : dict.toPinyin(match.hanzi, source.sylls);
     const showSource = fromPinyin ? settings.showPinyin : settings.showJyutping;
     const showOther = fromPinyin ? settings.showJyutping : settings.showPinyin;
+    // The everyday Cantonese word, where Cantonese says it differently (是 → 係).
+    const everyday = fromPinyin && settings.showColloquial ? colloquial?.lookup(match.hanzi, source.sylls) ?? null : null;
     const key = [
       source.kind, match.hanzi, source.sylls.join(' '), result.reading.join(' '),
       result.alts.map((a) => a.join(' ')).join('/'), result.corrected, showSource, showOther,
+      everyday ? everyday.map((w) => w.hanzi).join('/') : '',
     ].join('|');
     Object.assign(entry, {
       matched: true, host: match.host, kind: source.kind, hanzi: match.hanzi,
-      sylls: source.sylls, result, sourceText: node.nodeValue.trim(),
+      sylls: source.sylls, result, sourceText: node.nodeValue.trim(), everyday, showOther,
     });
     if (entry.key === key && isRendered(entry, node)) return;
     entry.key = key;
@@ -425,7 +430,7 @@
     }
     entry.wantHide = hide;
 
-    if (!showOther) {
+    if (!showOther && !entry.everyday) {
       removeAnno(entry);
       return;
     }
@@ -448,29 +453,56 @@
   function fillAnno(entry) {
     const { anno, result } = entry;
     anno.textContent = '';
-    const main = document.createElement('jp-main');
     if (entry.kind === 'jyutping') {
       // Added pinyin: tone marks, no tone styles.
       anno.dataset.kind = 'pinyin';
       delete anno.dataset.tones;
+      const main = document.createElement('jp-main');
       main.textContent = NS.pinyin.format(result.reading);
       anno.append(main);
     } else {
       anno.dataset.kind = 'jyutping';
       anno.dataset.tones = settings.toneStyle;
-      appendSyllables(main, result.reading);
-      anno.append(main);
-      if (settings.showAlternates && result.alts.length) {
-        const alt = document.createElement('jp-alt');
-        for (const reading of result.alts.slice(0, 2)) {
-          alt.append(' / ');
-          appendSyllables(alt, reading);
-        }
-        anno.append(alt);
-      }
+      if (entry.showOther) appendReading(anno, result);
+      if (entry.everyday) appendEveryday(anno, entry.everyday);
     }
     toggleAttr(anno, 'data-corrected', result.corrected);
     toggleAttr(anno, 'data-guess', result.guess);
+  }
+
+  function appendReading(anno, result) {
+    const main = document.createElement('jp-main');
+    appendSyllables(main, result.reading);
+    anno.append(main);
+    if (settings.showAlternates && result.alts.length) {
+      const alt = document.createElement('jp-alt');
+      for (const reading of result.alts.slice(0, 2)) {
+        alt.append(' / ');
+        appendSyllables(alt, reading);
+      }
+      anno.append(alt);
+    }
+  }
+
+  // One tag per everyday Cantonese word: the characters, their jyutping, and a short
+  // note where the word only covers one sense ("don't", "for a gift").
+  function appendEveryday(anno, words) {
+    const box = document.createElement('jp-canto');
+    for (const word of words) {
+      const tag = document.createElement('jp-tag');
+      tag.dataset.word = word.hanzi;
+      const hanzi = document.createElement('jp-hz');
+      hanzi.textContent = word.hanzi;
+      tag.append(hanzi);
+      appendSyllables(tag, word.jyut);
+      if (word.note) {
+        const note = document.createElement('jp-note');
+        note.textContent = word.note;
+        tag.append(note);
+      }
+      box.append(tag);
+    }
+    anno.append(box);
   }
 
   function appendSyllables(parent, sylls) {
@@ -543,8 +575,8 @@
     style.textContent = `
       jyut-ping { display: block; font: inherit; font-size: calc(var(--jp-base, 1em) * ${scale}); font-weight: 400;
         font-style: normal; line-height: 1.3; letter-spacing: normal; text-transform: none; text-decoration: none;
-        color: ${color}; margin: 0; padding: 0; border: 0; background: none; white-space: normal; cursor: pointer;
-        -webkit-user-select: none; user-select: none; }
+        --jp-color: ${color}; color: var(--jp-color); margin: 0; padding: 0; border: 0; background: none;
+        white-space: normal; cursor: pointer; -webkit-user-select: none; user-select: none; }
       jyut-ping[data-layout="below"] { padding-inline-end: 0.5em; }
       jyut-ping[data-layout="inline"] { display: inline; margin: 0 0.5em 0 0.4em; }
       jyut-ping jp-syl { white-space: nowrap; }
@@ -552,6 +584,16 @@
       jyut-ping[data-guess] jp-main { opacity: 0.6; }
       jyut-ping[data-corrected] jp-main { text-decoration: underline dotted; text-underline-offset: 2px; }
       jyut-ping:hover jp-main { text-decoration: underline; text-underline-offset: 2px; }
+      jyut-ping jp-canto { display: block; margin-top: 0.2em; }
+      jyut-ping jp-main + jp-canto, jyut-ping jp-alt + jp-canto { margin-top: 0.25em; }
+      jyut-ping[data-layout="inline"] jp-canto { display: inline; margin: 0 0 0 0.45em; }
+      jyut-ping jp-tag { display: inline-block; margin: 0 0.3em 0.15em 0; padding: 0.08em 0.5em 0.12em;
+        border-radius: 0.6em; background: color-mix(in srgb, var(--jp-color) 12%, transparent);
+        line-height: 1.35; white-space: nowrap; transition: background-color 0.15s; }
+      jyut-ping jp-tag:last-child { margin-right: 0; }
+      jyut-ping jp-tag:hover { background: color-mix(in srgb, var(--jp-color) 22%, transparent); }
+      jyut-ping jp-hz { margin-right: 0.3em; font-weight: 600; }
+      jyut-ping jp-note { margin-left: 0.35em; opacity: 0.65; font-size: 0.85em; }
       jyut-ping[data-tones="color"] jp-syl[data-tone="1"] { color: #d1495b; }
       jyut-ping[data-tones="color"] jp-syl[data-tone="2"] { color: #e07a1f; }
       jyut-ping[data-tones="color"] jp-syl[data-tone="3"] { color: #2a9d58; }
@@ -572,13 +614,15 @@
     const anno = ev.target instanceof Element ? ev.target.closest('jyut-ping') : null;
     const entry = anno && annoEntries.get(anno);
     if (!entry) return;
-    const correcting = ev.shiftKey && entry.kind === 'pinyin';
+    const tag = ev.target.closest('jp-tag'); // an everyday Cantonese word
+    const correcting = ev.shiftKey && entry.kind === 'pinyin' && !tag;
     if (!correcting && !settings.speakOnClick) return;
     // Keep the site from treating this as a click on the word underneath.
     ev.stopPropagation();
     if (ev.type !== 'click') return;
     ev.preventDefault();
     if (correcting) correct(entry);
+    else if (tag) speak(tag.dataset.word, 'yue');
     else speak(entry.hanzi, entry.kind === 'pinyin' ? 'yue' : 'cmn');
   }
 

@@ -3,23 +3,34 @@
 // the content scripts in tabs that were already open when they became allowed.
 
 const api = globalThis.browser ?? globalThis.chrome;
-const CONTENT_FILES = ['src/settings.js', 'src/pinyin.js', 'src/jyutping.js', 'src/dict.js', 'src/content.js'];
+const CONTENT_FILES = ['src/settings.js', 'src/pinyin.js', 'src/jyutping.js', 'src/dict.js', 'src/colloquial.js', 'src/content.js'];
 const COMMAND_SETTINGS = { 'toggle-jyutping': 'showJyutping', 'toggle-pinyin': 'showPinyin' };
 const WEB_PAGES = ['http://*/*', 'https://*/*'];
 
 let dataText = null;
+let colloquialText = null;
 
 api.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
   const reply = (promise) => {
     promise.then(sendResponse, (err) => sendResponse({ error: String(err) }));
     return true; // keeps sendResponse alive for the async reply
   };
-  if (msg?.type === 'jp:data') return reply(loadData().then((text) => ({ text })));
+  if (msg?.type === 'jp:data') {
+    return reply(Promise.all([loadData(), loadColloquial()]).then(([text, colloquial]) => ({ text, colloquial })));
+  }
   // Just the syllable lists (a few KB), so a page can check for real pinyin or
   // jyutping before asking for the whole dictionary.
   if (msg?.type === 'jp:syllables') return reply(loadData().then(syllableLists));
   return false;
 });
+
+async function loadColloquial() {
+  if (colloquialText === null) {
+    const res = await fetch(api.runtime.getURL('data/colloquial.tsv'));
+    colloquialText = await res.text();
+  }
+  return colloquialText;
+}
 
 function syllableLists(text) {
   const line = (kind) => text.match(new RegExp(`^${kind}\\t(.*)$`, 'm'))?.[1].split(' ') ?? [];

@@ -12,7 +12,9 @@ Chrome and Edge versions aren't in their stores yet.
 
 ## Usage
 
-Pages that show pinyin or jyutping get the other reading added automatically.
+Pages that show pinyin or jyutping get the other reading added automatically. Where
+spoken Cantonese uses a different everyday word, a small tag shows it: 看 → 睇 tai2,
+是 → 係 hai6.
 
 The 粵 toolbar panel lets you:
 

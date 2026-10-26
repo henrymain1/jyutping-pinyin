@@ -15,6 +15,16 @@ Writes `dist/jyutping-pinyin-firefox-<version>.zip` and `dist/jyutping-pinyin-ch
 Raise `"version"` in `extension/manifest.json` before uploading a new version. Store listing
 text and screenshots are in `store/`.
 
+## Everyday Cantonese words
+
+`extension/data/colloquial.tsv` is the hand-written list behind the Cantonese word tags
+(看 → 睇). The file's header explains the columns. After editing it, check every reading
+against CC-Canto:
+
+```
+python tools/check_colloquial.py
+```
+
 ## Rebuild the dictionary
 
 `extension/data/canto.txt` is generated from the CC-Canto release
