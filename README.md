@@ -31,6 +31,10 @@ On the page:
 The pinyin on the page decides the Cantonese reading, since many characters have more
 than one: 行 xíng → hang4, but 行 háng → hong4; 長 cháng → coeng4, but 長 zhǎng → zoeng2.
 
+## Help
+
+Questions and bug reports: [GitHub Issues](https://github.com/henrymain1/jyutping-pinyin/issues).
+
 ## Credits
 
 Readings come from [CC-Canto](https://cantonese.org) and the CC-CEDICT Cantonese readings

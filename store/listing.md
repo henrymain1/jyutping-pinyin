@@ -58,8 +58,9 @@ MIT License. The dictionary data inside keeps its own licence (CC BY-SA 3.0), no
 
 ## Support
 
-Optional. Leave the email and website empty to keep your address private, or add a
-project page later.
+- Support website: https://github.com/henrymain1/jyutping-pinyin/issues
+- Homepage: https://github.com/henrymain1/jyutping-pinyin
+- Support email: leave empty to keep your address private.
 
 ## Screenshots
 
