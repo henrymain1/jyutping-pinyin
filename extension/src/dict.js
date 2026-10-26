@@ -20,7 +20,7 @@
       this.words = new Map(); // hanzi -> [[pinyin, [[jyutping syllables], ...]], ...]
       this.maxWord = 1;
 
-      for (const line of text.split('\n')) {
+      for (const line of text.split(/\r?\n/)) {
         const kind = line[0];
         if (kind === 'C') {
           const [, ch, body] = line.split('\t');

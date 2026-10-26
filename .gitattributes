@@ -1,0 +1,3 @@
+# Keep LF everywhere; the dictionary reader splits canto.txt on newlines.
+* text=auto eol=lf
+*.png binary
