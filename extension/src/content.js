@@ -42,13 +42,15 @@
 
   // The script runs on every page but stays asleep until the page shows Chinese
   // characters and some text that really is pinyin (with tone marks) or jyutping.
-  // Two steps keep that cheap: a quick look at the page's text (French "é" passes
-  // it), then the real parsers on candidate text, using just the syllable lists.
-  // Only then does it load the dictionary.
+  // Two steps keep that cheap: a quick look at the text (French "é" passes it), then
+  // the real parsers on candidate text, using just the syllable lists. Only then
+  // does it load the dictionary.
   const MAYBE_HAN = /\p{Script=Han}/u;
   const MAYBE_ROMANISATION = /[āáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜ]|(?:^|[^a-z0-9])[a-z]{1,6}[1-6](?![a-z0-9])/i;
   let sleepObserver = null;
   let sleepTimer = 0;
+  let addedRoots = new Set(); // what the page added since the last look
+  let hanSeen = false; // the page has shown Chinese characters
   let syllablesPromise = null;
 
   function siteAllowed() {
@@ -69,14 +71,30 @@
 
   async function pageLooksRelevant() {
     const text = document.body?.textContent || '';
-    if (!MAYBE_HAN.test(text) || !MAYBE_ROMANISATION.test(text)) return false;
-    if (!(await (syllablesPromise ||= loadSyllables()))) return false;
-    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, { acceptNode: acceptText });
-    for (let node = walker.nextNode(); node; node = walker.nextNode()) {
-      if (!startsWithLetter(node)) continue;
-      if (NS.pinyin.parse(node.nodeValue)?.marked || NS.jyutping.parse(node.nodeValue)) return true;
-    }
-    return false;
+    hanSeen ||= MAYBE_HAN.test(text);
+    if (!hanSeen || !MAYBE_ROMANISATION.test(text)) return false;
+    return anyRomanisation(candidatesIn([document.body]));
+  }
+
+  // The same question for what the page just added, which is cheap enough to ask
+  // after every change. The first hanzi to appear mean looking at the whole page
+  // once, since the romanisation may have been there already.
+  async function addedLooksRelevant(roots) {
+    const connected = [...roots].filter((root) => root.isConnected);
+    if (!hanSeen) return connected.some((root) => MAYBE_HAN.test(root.textContent)) && pageLooksRelevant();
+    return anyRomanisation(candidatesIn(connected));
+  }
+
+  // Text nodes under `roots` that might be romanisation.
+  function candidatesIn(roots) {
+    const nodes = new Set();
+    for (const root of roots) collectCandidates(root, nodes);
+    return [...nodes].filter((node) => MAYBE_ROMANISATION.test(node.nodeValue));
+  }
+
+  async function anyRomanisation(nodes) {
+    if (!nodes.length || !(await (syllablesPromise ||= loadSyllables()))) return false;
+    return nodes.some((node) => NS.pinyin.parse(node.nodeValue)?.marked || NS.jyutping.parse(node.nodeValue));
   }
 
   async function applyState() {
@@ -85,9 +103,9 @@
       if (active) stop();
       return;
     }
-    if (!active && !dict && !(await pageLooksRelevant())) {
-      if (siteAllowed()) watchForRomanisation();
-      return;
+    if (!active && !dict) {
+      watchForRomanisation(); // first, so nothing added during the look is missed
+      if (!(await pageLooksRelevant())) return;
     }
     stopWatching();
     dict ||= await (dictPromise ||= loadDictionary());
@@ -120,17 +138,24 @@
   }
 
   // Pages often add their text later (single-page apps, a tapped word's pinyin), so
-  // look again, at most a couple of times a second, until something turns up.
+  // look at each addition, in batches 50 ms apart, until something turns up.
   function watchForRomanisation() {
     if (sleepObserver) return;
-    sleepObserver = new MutationObserver(() => {
-      if (sleepTimer) return;
-      sleepTimer = setTimeout(async () => {
-        if (await pageLooksRelevant()) applyState();
-        sleepTimer = 0;
-      }, 400);
+    sleepObserver = new MutationObserver((records) => {
+      for (const record of records) {
+        if (record.type === 'characterData') addedRoots.add(record.target);
+        else for (const node of record.addedNodes) addedRoots.add(node);
+      }
+      sleepTimer ||= setTimeout(lookAtAdded, 50);
     });
     sleepObserver.observe(document.documentElement, { childList: true, subtree: true, characterData: true });
+  }
+
+  async function lookAtAdded() {
+    sleepTimer = 0;
+    const roots = addedRoots;
+    addedRoots = new Set();
+    if (await addedLooksRelevant(roots)) applyState();
   }
 
   function stopWatching() {
@@ -138,6 +163,7 @@
     sleepObserver = null;
     clearTimeout(sleepTimer);
     sleepTimer = 0;
+    addedRoots = new Set();
   }
 
   async function loadDictionary() {

@@ -17,19 +17,23 @@
       this.chars = new Map(); // char -> raw "py=j,j;py=j;*=j" (parsed on first use)
       this.charTables = new Map(); // char -> Map(pinyin | '*' -> [jyutping...])
       this.charBases = new Map(); // char -> Set(toneless pinyin)
+      this.wordLines = new Map(); // hanzi -> raw "W" lines (parsed on first use)
       this.words = new Map(); // hanzi -> [[pinyin, [[jyutping syllables], ...]], ...]
-      this.maxWord = 1;
+      this.maxWord = 1; // longest word, in UTF-16 units (at least its length in characters)
 
+      // Runs on every page that shows readings, so it only files lines by their
+      // hanzi; the rest is parsed when a lookup needs it.
       for (const line of text.split(/\r?\n/)) {
         const kind = line[0];
         if (kind === 'C') {
-          const [, ch, body] = line.split('\t');
-          this.chars.set(ch, body);
+          const tab = line.indexOf('\t', 2);
+          this.chars.set(line.slice(2, tab), line.slice(tab + 1));
         } else if (kind === 'W') {
-          const [, trad, simp, pinyin, jyut] = line.split('\t');
-          const entry = [pinyin, jyut.split('|').map((j) => j.match(JYUT_SYLLABLE))];
-          this.addWord(trad, entry);
-          if (simp !== '-') this.addWord(simp, entry);
+          const tab = line.indexOf('\t', 2);
+          const trad = line.slice(2, tab);
+          const simp = line.slice(tab + 1, line.indexOf('\t', tab + 1));
+          this.addWord(trad, line);
+          if (simp !== '-') this.addWord(simp, line);
         } else if (kind === 'S') {
           this.syllables = line.slice(2).split(' ');
         } else if (kind === 'J') {
@@ -38,11 +42,25 @@
       }
     }
 
-    addWord(hanzi, entry) {
-      const list = this.words.get(hanzi);
-      if (list) list.push(entry);
-      else this.words.set(hanzi, [entry]);
-      this.maxWord = Math.max(this.maxWord, [...hanzi].length);
+    addWord(hanzi, line) {
+      const lines = this.wordLines.get(hanzi);
+      if (lines) lines.push(line);
+      else this.wordLines.set(hanzi, [line]);
+      if (hanzi.length > this.maxWord) this.maxWord = hanzi.length;
+    }
+
+    // Dictionary entries for the word `hanzi`: [[pinyin, [[jyutping syllables], ...]], ...].
+    wordEntries(hanzi) {
+      let entries = this.words.get(hanzi);
+      if (entries) return entries;
+      const lines = this.wordLines.get(hanzi);
+      if (!lines) return null;
+      entries = lines.map((line) => {
+        const [, , , pinyin, jyut] = line.split('\t');
+        return [pinyin, jyut.split('|').map((j) => j.match(JYUT_SYLLABLE))];
+      });
+      this.words.set(hanzi, entries);
+      return entries;
     }
 
     charTable(ch) {
@@ -96,7 +114,7 @@
       for (let i = 0; i < n; ) {
         let matched = 0;
         for (let len = Math.min(n - i, this.maxWord); len >= 2 && !matched; len--) {
-          const entries = this.words.get(chars.slice(i, i + len).join(''));
+          const entries = this.wordEntries(chars.slice(i, i + len).join(''));
           if (!entries) continue;
           const variants = pickEntry(entries, sylls.slice(i, i + len));
           if (!variants) continue;
@@ -188,7 +206,7 @@
       for (let i = 0; i < n; ) {
         let matched = 0;
         for (let len = Math.min(n - i, this.maxWord); len >= 2 && !matched; len--) {
-          const entries = this.words.get(chars.slice(i, i + len).join(''));
+          const entries = this.wordEntries(chars.slice(i, i + len).join(''));
           if (!entries) continue;
           const pinyin = pickByJyutping(entries, jsylls.slice(i, i + len));
           if (!pinyin) continue;
