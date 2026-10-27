@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Jyutping & Pinyin",
   "short_name": "Jyutping",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "description": "Adds Cantonese jyutping next to Mandarin pinyin, and pinyin next to jyutping, on any page that shows them. Readings from CC-Canto.",
   "icons": {
     "16": "icons/icon16.png",

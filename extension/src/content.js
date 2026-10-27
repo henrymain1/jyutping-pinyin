@@ -92,8 +92,29 @@
     stopWatching();
     dict ||= await (dictPromise ||= loadDictionary());
     if (!dict || !siteAllowed()) return;
-    if (active) refreshAll();
-    else start();
+    if (!active) start();
+  }
+
+  // Settings arrive straight from the panel (at once) and again from storage (a moment
+  // later, and in every other tab); only real changes do any work. Colour and size live
+  // in the stylesheet, so they never touch the readings themselves.
+  const STYLE_ONLY = new Set(['color', 'scale', 'speakOnClick']);
+  function applySettings(patch) {
+    const changed = [];
+    for (const [key, value] of Object.entries(patch)) {
+      if (!(key in DEFAULTS)) continue;
+      const next = value ?? DEFAULTS[key];
+      if (JSON.stringify(next) === JSON.stringify(settings[key])) continue;
+      settings[key] = next;
+      changed.push(key);
+    }
+    if (!changed.length) return;
+    if (!active || changed.includes('offSites')) {
+      applyState();
+      return;
+    }
+    updateStyle();
+    if (changed.some((key) => !STYLE_ONLY.has(key))) rerenderAll();
   }
 
   // Pages often add their text later (single-page apps, a tapped word's pinyin), so
@@ -153,12 +174,6 @@
     document.getElementById(STYLE_ID)?.remove();
   }
 
-  function refreshAll() {
-    updateStyle();
-    clearAll();
-    scanAll();
-  }
-
   function clearAll() {
     for (const entry of entries.values()) resetEntry(entry);
     entries.clear();
@@ -169,7 +184,7 @@
   function scanAll() {
     const found = new Set();
     collectCandidates(document.body, found);
-    for (const node of found) processNode(node);
+    processNodes(found);
   }
 
   // ---------------------------------------------------------------- watching the page
@@ -235,7 +250,7 @@
         todo.add(node); // romanisation rendered before its hanzi; try again
       }
     }
-    for (const node of todo) processNode(node);
+    processNodes(todo);
   }
 
   function touches(host, dirty) {
@@ -297,26 +312,67 @@
     if (!match) {
       entry.tries += 1;
       resetEntry(entry);
-      return;
+      return null;
     }
     const fromPinyin = source.kind === 'pinyin';
     const result = fromPinyin ? dict.convert(match.hanzi, source.sylls, corrections) : dict.toPinyin(match.hanzi, source.sylls);
+    Object.assign(entry, {
+      matched: true, host: match.host, kind: source.kind, hanzi: match.hanzi,
+      sylls: source.sylls, result, sourceText: node.nodeValue.trim(),
+    });
+    measureParent(entry, parent);
+    return entry;
+  }
+
+  // Matches every node first, then writes to the page, so the browser lays the page
+  // out once instead of once per reading.
+  function processNodes(nodes) {
+    const ready = [];
+    for (const node of nodes) {
+      const entry = processNode(node);
+      if (entry) ready.push([node, entry]);
+    }
+    for (const [node, entry] of ready) present(entry, node);
+  }
+
+  // Shows or hides the page's own reading and the added one according to the
+  // settings. A settings change calls this directly, without finding the hanzi again.
+  function present(entry, node, force = false) {
+    const fromPinyin = entry.kind === 'pinyin';
     const showSource = fromPinyin ? settings.showPinyin : settings.showJyutping;
     const showOther = fromPinyin ? settings.showJyutping : settings.showPinyin;
     // The everyday Cantonese word, where Cantonese says it differently (是 → 係).
-    const everyday = fromPinyin && settings.showColloquial ? colloquial?.lookup(match.hanzi, source.sylls) ?? null : null;
+    const everyday = fromPinyin && settings.showColloquial ? colloquial?.lookup(entry.hanzi, entry.sylls) ?? null : null;
+    const { result } = entry;
     const key = [
-      source.kind, match.hanzi, source.sylls.join(' '), result.reading.join(' '),
+      entry.kind, entry.hanzi, entry.sylls.join(' '), result.reading.join(' '),
       result.alts.map((a) => a.join(' ')).join('/'), result.corrected, showSource, showOther,
       everyday ? everyday.map((w) => w.hanzi).join('/') : '',
     ].join('|');
-    Object.assign(entry, {
-      matched: true, host: match.host, kind: source.kind, hanzi: match.hanzi,
-      sylls: source.sylls, result, sourceText: node.nodeValue.trim(), everyday, showOther,
-    });
-    if (entry.key === key && isRendered(entry, node)) return;
+    Object.assign(entry, { everyday, showOther });
+    if (!force && entry.key === key && isRendered(entry, node)) return;
     entry.key = key;
     render(entry, node, showSource, showOther);
+  }
+
+  // Applies changed settings to the readings already on the page, in place.
+  // `recompute` re-reads the dictionary too (after a correction changes).
+  function rerenderAll({ recompute = false } = {}) {
+    for (const [node, entry] of entries) {
+      if (!entry.matched || !node.isConnected) continue;
+      if (recompute && entry.kind === 'pinyin') entry.result = dict.convert(entry.hanzi, entry.sylls, corrections);
+      present(entry, node, true);
+    }
+  }
+
+  // The parent's computed display and font size, read once per parent. Reading them
+  // between DOM writes would make the browser lay the page out again every time.
+  function measureParent(entry, parent) {
+    if (entry.measured === parent) return;
+    const style = getComputedStyle(parent);
+    entry.measured = parent;
+    entry.parentDisplay = style.display;
+    entry.fontPx = parseFloat(style.fontSize);
   }
 
   // Separators sites put next to romanisation as their own text nodes, e.g. the
@@ -421,7 +477,7 @@
   function render(entry, node, showSource, showOther) {
     const parent = node.parentElement;
     const hide = !showSource && isOnlyText(parent, node);
-    if (!parent.classList.contains(HIDE_CLASS)) entry.fontPx = parseFloat(getComputedStyle(parent).fontSize);
+    measureParent(entry, parent); // already done unless the site moved the text
     if (hide) {
       parent.classList.add(HIDE_CLASS);
       entry.hiddenHost = parent;
@@ -530,7 +586,7 @@
     const anchor = anchorFor(node);
     if (anno.previousSibling !== anchor) parent.insertBefore(anno, anchor.nextSibling);
     let layout = entry.wantHide ? 'below' : settings.layout;
-    const display = getComputedStyle(parent).display;
+    const display = entry.parentDisplay;
     if (layout === 'below' && display === 'inline') {
       if (isOnlyText(parent, node)) {
         parent.classList.add(HOST_CLASS);
@@ -688,21 +744,19 @@
       let count = 0;
       for (const entry of entries.values()) if (entry.matched) count += 1;
       sendResponse({ active, count, siteAllowed: siteAllowed(), asleep: Boolean(sleepObserver) });
+    } else if (msg?.type === 'jp:apply') {
+      applySettings(msg.patch || {}); // the panel, telling this tab directly
     }
   });
 
   api.storage.onChanged.addListener((changes, area) => {
     if (area === 'sync') {
-      let relevant = false;
-      for (const [key, { newValue }] of Object.entries(changes)) {
-        if (!(key in DEFAULTS)) continue;
-        settings[key] = newValue ?? DEFAULTS[key];
-        relevant = true;
-      }
-      if (relevant) applyState();
+      const patch = {};
+      for (const [key, { newValue }] of Object.entries(changes)) patch[key] = newValue;
+      applySettings(patch);
     } else if (area === 'local' && changes[CORRECTIONS_KEY]) {
       corrections = changes[CORRECTIONS_KEY].newValue || {};
-      if (active) refreshAll();
+      if (active) rerenderAll({ recompute: true });
     }
   });
 

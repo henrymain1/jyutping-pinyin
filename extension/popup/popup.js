@@ -7,23 +7,55 @@ const COLORS = ['#0f766e', '#1d4ed8', '#7c3aed', '#be123c', '#b45309', '#4b5563'
 const SUPERSCRIPT = ['', '¹', '²', '³', '⁴', '⁵', '⁶'];
 const $ = (selector) => document.querySelector(selector);
 
-let settings = { ...DEFAULTS };
+// A copy of the settings kept in the panel's own storage, so the panel can draw them
+// and take clicks the moment it opens; browser storage can take a while to answer,
+// especially in Firefox right after it starts.
+const SNAPSHOT_KEY = 'jp-settings';
+function readSnapshot() {
+  try {
+    return JSON.parse(localStorage.getItem(SNAPSHOT_KEY)) || {};
+  } catch {
+    return {};
+  }
+}
+function writeSnapshot() {
+  try {
+    localStorage.setItem(SNAPSHOT_KEY, JSON.stringify(settings));
+  } catch {
+    // Storage unavailable (private window); the panel still works from browser storage.
+  }
+}
+
+let settings = { ...DEFAULTS, ...readSnapshot() };
 let tab = null;
 let voiceMissing = false;
-let pending = {};
-let saveTimer = 0;
+const touched = new Set(); // settings changed in this panel, which win over what storage says
+let pagePatch = null; // changes waiting to reach the page
+let pageFrame = 0;
 
-// Storage writes are debounced: the slider and colour picker fire many events,
-// and storage.sync limits writes per minute.
-function save(patch) {
+// Every change shows in the panel at once and goes straight to the page in this tab;
+// it's saved to browser storage too, for other tabs and next time. Slider and colour
+// drags pass { persist: false } while moving and save once when let go, because
+// storage.sync limits writes per minute.
+function save(patch, { persist = true } = {}) {
   Object.assign(settings, patch);
-  Object.assign(pending, patch);
+  for (const key of Object.keys(patch)) touched.add(key);
+  writeSnapshot();
   render();
-  clearTimeout(saveTimer);
-  saveTimer = setTimeout(() => {
-    api.storage.sync.set(pending);
-    pending = {};
-  }, 200);
+  sendToPage(patch);
+  if (persist) api.storage.sync.set(patch);
+}
+
+// At most one message per frame, so dragging the slider stays smooth.
+function sendToPage(patch) {
+  pagePatch = { ...pagePatch, ...patch };
+  if (!tab || pageFrame) return;
+  pageFrame = requestAnimationFrame(() => {
+    pageFrame = 0;
+    const toSend = pagePatch;
+    pagePatch = null;
+    api.tabs.sendMessage(tab.id, { type: 'jp:apply', patch: toSend }).catch(() => {});
+  });
 }
 
 // ------------------------------------------------------------- rendering
@@ -123,7 +155,8 @@ function bindControls() {
     }
   }
 
-  $('#scale').addEventListener('input', (e) => save({ scale: Number(e.target.value) }));
+  $('#scale').addEventListener('input', (e) => save({ scale: Number(e.target.value) }, { persist: false }));
+  $('#scale').addEventListener('change', (e) => save({ scale: Number(e.target.value) }));
 
   const wrap = $('#swatches');
   const custom = wrap.querySelector('.custom');
@@ -138,7 +171,8 @@ function bindControls() {
     swatch.addEventListener('click', () => save({ color }));
     wrap.insertBefore(swatch, custom);
   }
-  $('#custom-color').addEventListener('input', (e) => save({ color: e.target.value }));
+  $('#custom-color').addEventListener('input', (e) => save({ color: e.target.value }, { persist: false }));
+  $('#custom-color').addEventListener('change', (e) => save({ color: e.target.value }));
 
   $('#showAlternates').addEventListener('change', (e) => {
     pop(e.target);
@@ -302,26 +336,38 @@ api.storage.onChanged.addListener((changes, area) => {
   // back here with the values already shown, so those are skipped.
   if (area === 'sync') {
     let changed = false;
-    for (const key of ['showPinyin', 'showJyutping', 'offSites']) {
-      if (!changes[key] || key in pending) continue;
-      const value = changes[key].newValue ?? DEFAULTS[key];
+    for (const [key, { newValue }] of Object.entries(changes)) {
+      if (!(key in DEFAULTS)) continue;
+      const value = newValue ?? DEFAULTS[key];
       if (JSON.stringify(value) === JSON.stringify(settings[key])) continue;
       settings[key] = value;
       changed = true;
     }
-    if (changed) render();
-    if (changed && changes.offSites) refreshStatus();
+    if (!changed) return;
+    writeSnapshot();
+    render();
+    if (changes.offSites) refreshStatus();
   }
 });
 
-(async () => {
-  settings = await api.storage.sync.get(DEFAULTS);
-  bindControls();
-  bindSiteRow();
+// Draw from the snapshot and take clicks straight away; storage and the tab follow.
+bindControls();
+bindSiteRow();
+render();
+watchVoice();
+showShortcuts();
+renderCorrections();
+
+api.storage.sync.get(DEFAULTS).then((stored) => {
+  // Anything changed in the panel before storage answered stays as chosen.
+  const chosen = Object.fromEntries([...touched].map((key) => [key, settings[key]]));
+  settings = { ...stored, ...chosen };
+  writeSnapshot();
   render();
-  watchVoice();
-  showShortcuts();
-  renderCorrections();
-  [tab] = await api.tabs.query({ active: true, currentWindow: true });
+});
+
+api.tabs.query({ active: true, currentWindow: true }).then(([active]) => {
+  tab = active;
+  if (pagePatch) sendToPage({}); // clicks made before the tab was known
   refreshStatus();
-})();
+});
