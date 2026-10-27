@@ -45,11 +45,15 @@ async function loadData() {
   return dataText;
 }
 
-api.commands.onCommand.addListener(async (command) => {
+// The current tab hears about the change at once; other tabs pick it up from storage.
+api.commands.onCommand.addListener(async (command, tab) => {
   const key = COMMAND_SETTINGS[command];
   if (!key) return;
   const current = await api.storage.sync.get({ [key]: true });
-  await api.storage.sync.set({ [key]: !current[key] });
+  const patch = { [key]: !current[key] };
+  tab ??= (await api.tabs.query({ active: true, lastFocusedWindow: true }))[0];
+  if (tab?.id) api.tabs.sendMessage(tab.id, { type: 'jp:apply', patch }).catch(() => {});
+  await api.storage.sync.set(patch);
 });
 
 // The content scripts guard against running twice, and stay asleep on pages

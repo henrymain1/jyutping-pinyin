@@ -97,7 +97,9 @@
 
   // Settings arrive straight from the panel (at once) and again from storage (a moment
   // later, and in every other tab); only real changes do any work. Colour and size live
-  // in the stylesheet, so they never touch the readings themselves.
+  // in the stylesheet, so they never touch the readings themselves, and the stylesheet
+  // is rewritten only for them: rewriting it restyles the whole page.
+  const STYLESHEET = new Set(['color', 'scale']);
   const STYLE_ONLY = new Set(['color', 'scale', 'speakOnClick']);
   function applySettings(patch) {
     const changed = [];
@@ -113,7 +115,7 @@
       applyState();
       return;
     }
-    updateStyle();
+    if (changed.some((key) => STYLESHEET.has(key))) updateStyle();
     if (changed.some((key) => !STYLE_ONLY.has(key))) rerenderAll();
   }
 
@@ -337,31 +339,36 @@
 
   // Shows or hides the page's own reading and the added one according to the
   // settings. A settings change calls this directly, without finding the hanzi again.
-  function present(entry, node, force = false) {
+  // `content` covers what goes inside the added reading; the rest of the key only
+  // decides what is shown, which is a class or attribute change, so switching pinyin
+  // on and off never rebuilds the readings.
+  function present(entry, node) {
     const fromPinyin = entry.kind === 'pinyin';
     const showSource = fromPinyin ? settings.showPinyin : settings.showJyutping;
     const showOther = fromPinyin ? settings.showJyutping : settings.showPinyin;
     // The everyday Cantonese word, where Cantonese says it differently (是 → 係).
     const everyday = fromPinyin && settings.showColloquial ? colloquial?.lookup(entry.hanzi, entry.sylls) ?? null : null;
     const { result } = entry;
-    const key = [
+    const content = [
       entry.kind, entry.hanzi, entry.sylls.join(' '), result.reading.join(' '),
-      result.alts.map((a) => a.join(' ')).join('/'), result.corrected, showSource, showOther,
-      everyday ? everyday.map((w) => w.hanzi).join('/') : '',
+      result.alts.map((a) => a.join(' ')).join('/'), result.corrected, result.guess, showOther,
+      everyday ? everyday.map((w) => w.hanzi).join('/') : '', settings.toneStyle, settings.showAlternates,
     ].join('|');
+    const key = `${content}|${showSource}|${settings.layout}`;
     Object.assign(entry, { everyday, showOther });
-    if (!force && entry.key === key && isRendered(entry, node)) return;
+    if (entry.key === key && isRendered(entry, node)) return;
     entry.key = key;
-    render(entry, node, showSource, showOther);
+    render(entry, node, showSource, showOther, content);
   }
 
-  // Applies changed settings to the readings already on the page, in place.
-  // `recompute` re-reads the dictionary too (after a correction changes).
+  // Applies changed settings to the readings already on the page, in place; readings
+  // the change doesn't affect are skipped. `recompute` re-reads the dictionary too
+  // (after a correction changes).
   function rerenderAll({ recompute = false } = {}) {
     for (const [node, entry] of entries) {
       if (!entry.matched || !node.isConnected) continue;
       if (recompute && entry.kind === 'pinyin') entry.result = dict.convert(entry.hanzi, entry.sylls, corrections);
-      present(entry, node, true);
+      present(entry, node);
     }
   }
 
@@ -474,7 +481,7 @@
   // The page's own romanisation is hidden by collapsing its element (font-size 0),
   // which only works when that element holds nothing else. The added reading then
   // needs an absolute size, measured before collapsing.
-  function render(entry, node, showSource, showOther) {
+  function render(entry, node, showSource, showOther, content) {
     const parent = node.parentElement;
     const hide = !showSource && isOnlyText(parent, node);
     measureParent(entry, parent); // already done unless the site moved the text
@@ -494,7 +501,10 @@
       entry.anno = document.createElement('jyut-ping');
       annoEntries.set(entry.anno, entry);
     }
-    fillAnno(entry);
+    if (entry.content !== content) {
+      fillAnno(entry);
+      entry.content = content;
+    }
     if (hide && entry.fontPx) entry.anno.style.setProperty('--jp-base', `${entry.fontPx}px`);
     else entry.anno.style.removeProperty('--jp-base');
     placeAnno(entry, node);

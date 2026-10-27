@@ -31,7 +31,7 @@ let tab = null;
 let voiceMissing = false;
 const touched = new Set(); // settings changed in this panel, which win over what storage says
 let pagePatch = null; // changes waiting to reach the page
-let pageFrame = 0;
+let dragTimer = 0;
 
 // Every change shows in the panel at once and goes straight to the page in this tab;
 // it's saved to browser storage too, for other tabs and next time. Slider and colour
@@ -42,20 +42,30 @@ function save(patch, { persist = true } = {}) {
   for (const key of Object.keys(patch)) touched.add(key);
   writeSnapshot();
   render();
-  sendToPage(patch);
+  sendToPage(patch, { drag: !persist });
   if (persist) api.storage.sync.set(patch);
 }
 
-// At most one message per frame, so dragging the slider stays smooth.
-function sendToPage(patch) {
+// Clicks reach the page at once. Drags send at most every 30 ms so the page keeps
+// up; a timer rather than an animation frame, since Firefox may not redraw the
+// panel promptly.
+function sendToPage(patch, { drag = false } = {}) {
   pagePatch = { ...pagePatch, ...patch };
-  if (!tab || pageFrame) return;
-  pageFrame = requestAnimationFrame(() => {
-    pageFrame = 0;
-    const toSend = pagePatch;
-    pagePatch = null;
-    api.tabs.sendMessage(tab.id, { type: 'jp:apply', patch: toSend }).catch(() => {});
-  });
+  if (!tab) return; // sent once the tab is known
+  if (drag) {
+    dragTimer ||= setTimeout(flushToPage, 30);
+    return;
+  }
+  flushToPage();
+}
+
+function flushToPage() {
+  clearTimeout(dragTimer);
+  dragTimer = 0;
+  if (!pagePatch) return;
+  const toSend = pagePatch;
+  pagePatch = null;
+  api.tabs.sendMessage(tab.id, { type: 'jp:apply', patch: toSend }).catch(() => {});
 }
 
 // ------------------------------------------------------------- rendering
@@ -368,6 +378,6 @@ api.storage.sync.get(DEFAULTS).then((stored) => {
 
 api.tabs.query({ active: true, currentWindow: true }).then(([active]) => {
   tab = active;
-  if (pagePatch) sendToPage({}); // clicks made before the tab was known
+  flushToPage(); // clicks made before the tab was known
   refreshStatus();
 });
