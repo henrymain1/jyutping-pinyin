@@ -17,13 +17,27 @@ text and screenshots are in `store/`.
 
 ## Everyday Cantonese words
 
-`extension/data/colloquial.tsv` is the hand-written list behind the Cantonese word tags
-(看 → 睇). The file's header explains the columns. After editing it, check every reading
+`extension/data/colloquial.tsv` is the reviewed list behind the Cantonese word tags
+(看 → 睇). The file's header explains the columns. To find more words, download the
+sources once and generate suggestions:
+
+```
+python tools/fetch_colloquial_sources.py path/to/sources
+python tools/suggest_colloquial.py path/to/sources
+```
+
+`path/to/sources/suggestions.tsv` lists the Mandarin words not reviewed yet, HSK words
+first, with the evidence for each suggestion (the script's docstring explains the
+columns). Copy the rows you agree with into colloquial.tsv, fixing them as needed, and
+add the words you leave out to `tools/colloquial_skip.tsv`. Then check every reading
 against CC-Canto:
 
 ```
 python tools/check_colloquial.py
 ```
+
+The word counts that rank the suggestions come from [words.hk](https://words.hk)
+(public domain) and the Hong Kong Cantonese Corpus (CC BY 4.0); they aren't shipped.
 
 ## Rebuild the dictionary
 

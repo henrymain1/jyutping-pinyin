@@ -40,8 +40,11 @@ Questions and bug reports: [GitHub Issues](https://github.com/henrymain1/jyutpin
 ## Credits
 
 Readings come from [CC-Canto](https://cantonese.org) and the CC-CEDICT Cantonese readings
-by Pleco Inc., licensed CC BY-SA 3.0.
+by Pleco Inc., licensed CC BY-SA 3.0. The everyday Cantonese words were chosen with help
+from [開放粵語詞典](https://kaifangcidian.com) (CC BY 3.0) and
+[Wiktionary](https://en.wiktionary.org) (CC BY-SA 4.0).
 
 ## License
 
-MIT for the code. The dictionary data in `extension/data/canto.txt` is CC BY-SA 3.0.
+MIT for the code. The dictionary data in `extension/data/canto.txt` is CC BY-SA 3.0, and
+the word list in `extension/data/colloquial.tsv` is CC BY-SA 4.0.

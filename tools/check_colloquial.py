@@ -20,6 +20,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "extension" / "data"
 SYL = re.compile(r"[a-zv]+[1-6]")
+# Everyday readings CC-Canto lacks, checked against words.hk.
+EXTRA_JYUTPING = {"爸": {"baa4"}, "𨋢": {"lip1"}, "晚": {"maan1"}}
 
 
 def load_canto():
@@ -39,6 +41,8 @@ def load_canto():
             _, trad, simp, _, jyut = parts
             for form in {trad, simp} - {"-"}:
                 words[form].update(jyut.split("|"))
+    for ch, readings in EXTRA_JYUTPING.items():
+        char_jyut[ch].update(readings)
     return char_jyut, char_pinyin, words
 
 

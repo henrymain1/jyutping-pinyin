@@ -6,7 +6,10 @@
 #      when it ends in "!". Empty matches any reading.
 #   3. Cantonese words: "漢字 jyut ping" with an optional "(note)", several joined by " | "
 #
+# New rows are reviewed from tools/suggest_colloquial.py (see docs/development.md); words
+# reviewed and left out go in tools/colloquial_skip.tsv.
 # Check the Cantonese readings against CC-Canto with: python tools/check_colloquial.py
+# Licence: CC BY-SA 4.0, see LICENSE.txt.
 
 # Pronouns and pointing words
 是	shi4	係 hai6
@@ -100,7 +103,7 @@
 喜歡,喜欢	xi3huan5	鍾意 zung1 ji3
 睡覺,睡觉	shui4jiao4	瞓覺 fan3 gaau3
 穿	chuan1	着 zoek3
-站	zhan4	企 kei5
+站	zhan4	企 kei5 (stand)
 找	zhao3	搵 wan2
 拿	na2	攞 lo2
 聊天	liao2tian1	傾偈 king1 gai2
@@ -151,3 +154,911 @@
 對不起,对不起	dui4bu5qi3	對唔住 deoi3 m4 zyu6
 沒關係,没关系	mei2guan1xi5	唔緊要 m4 gan2 jiu3
 再見,再见	zai4jian4	拜拜 baai1 baai3
+
+# HSK 1-3 words, reviewed from tools/suggest_colloquial.py
+會,会	hui4	識 sik1 (know how to)
+想	xiang3	諗 nam2 (think)
+能	neng2	可以 ho2 ji5
+下	xia4	落 lok6 (go down)
+小	xiao3	細 sai3
+工作	gong1zuo4	做嘢 zou6 je5 (work) | 工 gung1 (a job)
+請,请	qing3	唔該 m4 goi1 (please)
+回	hui2	返 faan1 (go back)
+認識,认识	ren4shi5	識 sik1
+塊,块	kuai4	蚊 man1 (money)
+元	yuan2	蚊 man1 (money)
+角	jiao3	毫 hou4 (ten cents)
+媽媽,妈妈	ma1ma5	阿媽 aa3 maa1
+爸爸	ba4ba5	阿爸 aa3 baa4 | 老豆 lou5 dau6
+哥哥	ge1ge5	大佬 daai6 lou2 | 阿哥 aa3 go1
+姐姐	jie3jie5	家姐 gaa1 ze1
+弟弟	di4di5	細佬 sai3 lou2
+妹妹	mei4mei5	細妹 sai3 mui2
+奶奶	nai3nai5	嫲嫲 maa4 maa4
+爺爺,爷爷	ye2ye5	阿爺 aa3 je4
+女兒,女儿	nv3er2	女 neoi2
+妻子	qi1zi5	老婆 lou5 po4
+丈夫	zhang4fu5	老公 lou5 gung1
+別人,别人	bie2ren5	人哋 jan4 dei6
+客人	ke4ren2	人客 jan4 haak3
+鄰居,邻居	lin2ju1	街坊 gaai1 fong1
+服務員,服务员	fu2wu4yuan2	侍應 si6 jing3 | 伙記 fo2 gei3
+電影,电影	dian4ying3	戲 hei3
+哪	na3	邊 bin1
+哪	nei3	邊 bin1
+上午	shang4wu3	上晝 soeng6 zau3
+下午	xia4wu3	下晝 haa6 zau3
+星期	xing1qi1	禮拜 lai5 baai3
+去年	qu4nian2	舊年 gau6 nin2
+明年	ming2nian2	出年 ceot1 nin2
+每天	mei3tian1	日日 jat6 jat6
+小時,小时	xiao3shi2	鐘頭 zung1 tau4 | 個鐘 go3 zung1
+最近	zui4jin4	近排 gan6 paai2 | 呢排 ni1 paai2
+一會兒,一会儿		一陣 jat1 zan6
+名字	ming2zi5	名 meng2
+看見,看见	kan4jian4	見到 gin3 dou2 | 睇到 tai2 dou2
+冷	leng3	凍 dung3
+菜	cai4	餸 sung3 (dishes with rice)
+米飯,米饭	mi3fan4	飯 faan6
+麵條,面条	mian4tiao2	麵 min6
+葡萄	pu2tao5	提子 tai4 zi2
+菜單,菜单	cai4dan1	餐牌 caan1 paai2
+盤子,盘子	pan2zi5	碟 dip2
+商店	shang1dian4	舖頭 pou3 tau2
+買東西,买东西	mai3dong1xi5	買嘢 maai5 je5
+錢包,钱包	qian2bao1	銀包 ngan4 baau1
+房間,房间	fang2jian1	房 fong2
+外面	wai4mian4	出面 ceot1 min6
+裡面,裏面,里面	li3mian4	入面 jap6 min6
+旁邊,旁边	pang2bian1	隔籬 gaak3 lei4 | 側邊 zak1 bin1
+教室	jiao4shi4	課室 fo3 sat1
+年級,年级	nian2ji2	年班 nin4 baan1
+複習,复习	fu4xi2	溫習 wan1 zaap6 | 溫書 wan1 syu1
+不客氣,不客气	bu4ke4qi5	唔使客氣 m4 sai2 haak3 hei3
+些	xie1	啲 di1
+有點,有点	you3dian3	有啲 jau5 di1
+有點兒,有点儿		有啲 jau5 di1
+還有,还有	hai2you3	仲有 zung6 jau5
+還沒,还没	hai2mei2	仲未 zung6 mei6
+還沒有,还没有	hai2mei2you3	仲未 zung6 mei6
+著,着	zhe5	住 zyu6 | 緊 gan2
+吧	ba5	啦 laa1 (suggesting) | 啩 gwaa3 (guessing)
+從,从	cong2	由 jau4 | 喺 hai2
+別,别	bie2	唔好 m4 hou2 | 咪 mai5
+進,进	jin4	入 jap6
+正在	zheng4zai4	喺度 hai2 dou6
+讓,让	rang4	畀 bei2 | 等 dang2
+把	ba3	將 zoeng1 (before an object)
+被	bei4	畀 bei2 (passive)
+為了,为了	wei4le5	為咗 wai6 zo2
+除了	chu2le5	除咗 ceoi4 zo2
+只	zhi3	淨係 zing6 hai6 (only)
+更	geng4	更加 gang3 gaa1
+才	cai2	先 sin1 | 先至 sin1 zi3
+像	xiang4	似 ci5 | 好似 hou2 ci5
+然後,然后	ran2hou4	跟住 gan1 zyu6
+一邊,一边	yi1bian1	一路 jat1 lou6 (while)
+經常,经常	jing1chang2	成日 seng4 jat6 | 時時 si4 si4
+總是,总是	zong3shi4	成日 seng4 jat6 | 總係 zung2 hai6
+馬上,马上	ma3shang4	即刻 zik1 hak1
+當然,当然	dang1ran2	梗係 gang2 hai6
+多麼,多么	duo1me5	幾咁 gei2 gam3
+久	jiu3	耐 noi6
+票	piao4	飛 fei1 (ticket)
+輛,辆	liang4	架 gaa3 (for vehicles)
+雙,双	shuang1	對 deoi3 (a pair)
+休息	xiu1xi5	唞 tau2
+上班	shang4ban1	返工 faan1 gung1
+起床	qi3chuang2	起身 hei2 san1
+生病	sheng1bing4	病 beng6 | 唔舒服 m4 syu1 fuk6
+看病	kan4bing4	睇醫生 tai2 ji1 sang1
+懂	dong3	明 ming4 (understand) | 識 sik1 (know how)
+明白	ming2bai5	明 ming4
+忘記,忘记	wang4ji4	唔記得 m4 gei3 dak1
+幫忙,帮忙	bang1mang2	幫手 bong1 sau2
+花	hua1	使 sai2 (spend)
+差	cha4	爭 zaang1 (short of)
+關,关	guan1	閂 saan1 (close)
+離開,离开	li2kai1	走 zau2 (leave)
+願意,愿意	yuan4yi4	肯 hang2
+打算	da3suan4	諗住 nam2 zyu6
+選擇,选择	xuan3ze2	揀 gaan2
+敢	gan3	夠膽 gau3 daam2
+哭	ku1	喊 haam3
+疼	teng2	痛 tung3 (hurt) | 錫 sek3 (dote on)
+騎,骑	qi2	踩 caai2 (a bike)
+游泳	you2yong3	游水 jau4 seoi2
+爬山	pa2shan1	行山 haang4 saan1
+開車,开车	kai1che1	揸車 zaa1 ce1
+照片	zhao4pian4	相 soeng2
+照相機,照相机	zhao4xiang4ji1	相機 soeng2 gei1
+故事	gu4shi5	故仔 gu2 zai2
+聲音,声音	sheng1yin1	聲 seng1
+月亮	yue4liang5	月光 jyut6 gwong1
+鳥,鸟	niao3	雀仔 zoek3 zai2 | 雀 zoek3
+眼睛	yan3jing5	眼 ngaan5
+耳朵	er3duo5	耳仔 ji5 zai2
+鼻子	bi2zi5	鼻哥 bei6 go1
+臉,脸	lian3	面 min6
+腿	tui3	腳 goek3 | 髀 bei2 (thigh)
+帽子	mao4zi5	帽 mou2
+裙子	qun2zi5	裙 kwan4
+襯衫,衬衫	chen4shan1	恤衫 seot1 saam1
+傘,伞	san3	遮 ze1
+自行車,自行车	zi4xing2che1	單車 daan1 ce1
+電梯,电梯	dian4ti1	𨋢 lip1
+空調,空调	kong1tiao2	冷氣 laang5 hei3
+行李箱	xing2li5xiang1	喼 gip1
+胖	pang4	肥 fei4
+年輕,年轻	nian2qing1	後生 hau6 saang1
+可愛,可爱	ke3ai4	得意 dak1 ji3
+聰明,聪明	cong1ming5	叻 lek1 | 醒目 sing2 muk6
+高興,高兴	gao1xing4	開心 hoi1 sam1
+快樂,快乐	kuai4le4	開心 hoi1 sam1
+著急,着急	zhao2ji2	心急 sam1 gap1
+餓,饿	e4	肚餓 tou5 ngo6
+渴	ke3	口渴 hau2 hot3 | 頸渴 geng2 hot3
+壞,坏	huai4	爛 laan6 (broken) | 衰 seoi1 (bad)
+容易	rong2yi4	易 ji6
+
+# HSK 4 words, reviewed from tools/suggest_colloquial.py
+起來,起来	qi3lai5	起身 hei2 san1 (get up) | 起嚟 hei2 lai4
+最後,最后	zui4hou4	最尾 zeoi3 mei1
+開玩笑,开玩笑	kai1wan2xiao4	講笑 gong2 siu3
+掉	diao4	跌 dit3 (fall, drop)
+也許,也许	ye3xu3	或者 waak6 ze2
+挺	ting3	幾 gei2 (quite)
+好像	hao3xiang4	好似 hou2 ci5
+弄	nong4	整 zing2
+後來,后来	hou4lai2	後尾 hau6 mei1 | 後嚟 hau6 lai4
+嘴	zui3	口 hau2
+省	sheng3	慳 haan1 (save)
+樣子,样子	yang4zi5	樣 joeng2
+正確,正确	zheng4que4	啱 ngaam1
+取	qu3	攞 lo2
+亮	liang4	光 gwong1 (bright)
+味道	wei4dao5	味 mei6
+差不多	cha4bu5duo1	差唔多 caa1 m4 do1
+隨便,随便	sui2bian4	是但 si6 daan6 | 求其 kau4 kei4
+合適,合适	he2shi4	啱 ngaam1
+出生	chu1sheng1	出世 ceot1 sai3
+到處,到处	dao4chu4	周圍 zau1 wai4
+故意	gu4yi4	特登 dak6 dang1 | 專登 zyun1 dang1
+看法	kan4fa3	睇法 tai2 faat3
+正好	zheng4hao3	啱啱好 ngaam1 ngaam1 hou2
+顧客,顾客	gu4ke4	客 haak3
+筆記本,笔记本	bi3ji4ben3	簿 bou2 (notebook) | 手提電腦 sau2 tai4 din6 nou5 (laptop)
+信用卡	xin4yong4ka3	信用咭 seon3 jung6 kaat1
+不但	bu4dan4	唔單止 m4 daan1 zi2
+座位	zuo4wei4	位 wai2
+髒,脏	zang1	污糟 wu1 zou1 | 邋遢 laat6 taat3
+瓶子	ping2zi5	樽 zeon1
+乾杯,干杯	gan1bei1	飲勝 jam2 sing3
+涼快,凉快	liang2kuai5	涼爽 loeng4 song2 | 涼 loeng4
+到底	dao4di3	究竟 gau3 ging2
+父親,父亲	fu4qin1	阿爸 aa3 baa4 | 老豆 lou5 dau6
+談,谈	tan2	傾 king1 (talk over)
+母親,母亲	mu3qin1	阿媽 aa3 maa1 | 老母 lou5 mou2
+仍然	reng2ran2	仲 zung6
+值得	zhi2de5	抵 dai2 (worth it)
+警察	jing3cha2	差佬 caai1 lou2 (casual)
+難道,难道	nan2dao4	唔通 m4 tung1
+群	qun2	班 baan1 (of people)
+美麗,美丽	mei3li4	靚 leng3
+破	po4	爛 laan6 | 穿 cyun1 (a hole)
+不僅,不仅	bu4jin3	唔單止 m4 daan1 zi2
+頓,顿	dun4	餐 caan1 (a meal)
+千萬,千万	qian1wan4	千祈 cin1 kei4 (be sure to)
+修	xiu1	整 zing2 (fix)
+睏,困	kun4	眼瞓 ngaan5 fan3
+浪費,浪费	lang4fei4	嘥 saai1
+恐怕	kong3pa4	睇怕 tai2 paa3
+專門,专门	zhuan1men2	專登 zyun1 dang1 (on purpose)
+工資,工资	gong1zi1	人工 jan4 gung1
+吵	chao3	嘈 cou4 (noisy) | 嗌交 aai3 gaau1 (quarrel)
+只好	zhi3hao3	唯有 wai4 jau5
+沙發,沙发	sha1fa1	梳化 so1 faa2
+家具	jia1ju4	傢俬 gaa1 si1
+整齊,整齐	zheng3qi2	企理 kei5 lei5
+理髮,理发	li3fa4	剪頭髮 zin2 tau4 faat3 | 飛髮 fei1 faat3
+複印,复印	fu4yin4	影印 jing2 jan3
+不管	bu4guan3	唔理 m4 lei5
+帥,帅	shuai4	靚仔 leng3 zai2 | 有型 jau5 jing4
+躺	tang3	瞓 fan3 (lie down)
+擦	ca1	抹 maat3 (wipe)
+無聊,无聊	wu2liao2	悶 mun6 (bored)
+號碼,号码	hao4ma3	冧巴 lam1 baa2
+脫,脱	tuo1	除 ceoi4 (take off)
+有趣	you3qu4	得意 dak1 ji3 | 過癮 gwo3 jan5
+肚子	du4zi5	肚 tou5
+質量,质量	zhi4liang4	質素 zat1 sou3
+購物,购物	gou4wu4	買嘢 maai5 je5 | 行街 haang4 gaai1
+巧克力	qiao3ke4li4	朱古力 zyu1 gu1 lik1
+寬,宽	kuan1	闊 fut3
+獎金,奖金	jiang3jin1	花紅 faa1 hung4 (bonus)
+受不了	shou4bu4liao3	頂唔順 ding2 m4 seon6 | 頂唔住 ding2 m4 zyu6
+護士,护士	hu4shi5	姑娘 gu1 noeng4 (nurse)
+笨	ben4	蠢 ceon2
+窗戶,窗户	chuang1hu5	窗 coeng1
+棵	ke1	樖 po1
+鏡子,镜子	jing4zi5	鏡 geng3
+抽煙,抽烟	chou1yan1	食煙 sik6 jin1
+孫子,孙子	sun1zi5	孫仔 syun1 zai2 | 孫 syun1
+來不及,来不及	lai2bu5ji2	趕唔切 gon2 m4 cit3 | 唔切 m4 cit3
+得意	de2yi4	得戚 dak1 cik1 (pleased with oneself)
+襪子,袜子	wa4zi5	襪 mat6
+來得及,来得及	lai2de5ji2	趕得切 gon2 dak1 cit3 | 得切 dak1 cit3
+加油站	jia1you2zhan4	油站 jau4 zaam6
+葉子,叶子	ye4zi5	葉 jip6
+堵車,堵车	du3che1	塞車 sak1 ce1
+塑料袋	su4liao4dai4	膠袋 gaau1 doi2
+填空	tian2kong4	填充 tin4 cung1
+即使	ji2shi3	就算 zau6 syun3
+討厭,讨厌	tao3yan4	憎 zang1 (hate) | 乞人憎 hat1 jan4 zang1 (annoying)
+丟,丢	diu1	唔見 m4 gin3 (lose) | 掉 deu6 (throw away)
+厲害,厉害	li4hai5	犀利 sai1 lei6 | 勁 ging6
+騙,骗	pian4	呃 ngaak1
+可憐,可怜	ke3lian2	陰功 jam1 gung1
+年齡,年龄	nian2ling2	年紀 nin4 gei2
+熟悉	shu2xi1	熟 suk6
+猜	cai1	估 gu2
+扔	reng1	掉 deu6 | 抌 dam2
+軟,软	ruan3	腍 nam4 (of food)
+嘗,尝	chang2	試 si3 (taste)
+收拾	shou1shi5	執 zap1 | 執拾 zap1 sap6
+飲料,饮料	yin3liao4	嘢飲 je5 jam2 | 飲品 jam2 ban2
+偶爾,偶尔	ou3er3	間中 gaan3 zung1
+稍微	shao1wei1	少少 siu2 siu2 | 略略 loek6 loek6
+打扮	da3ban5	扮靚 baan6 leng3
+打擾,打扰	da3rao3	阻 zo2
+盒子	he2zi5	盒 hap2
+鼓掌	gu3zhang3	拍手 paak3 sau2
+西紅柿,西红柿	xi1hong2shi4	番茄 faan1 ke2
+與,与	yu3	同 tung4
+趟	tang4	轉 zyun3 (a trip)
+鑰匙,钥匙	yao4shi5	鎖匙 so2 si4
+害羞	hai4xiu1	怕醜 paa3 cau2
+咳嗽	ke2sou5	咳 kat1
+流淚,流泪	liu2lei4	流眼淚 lau4 ngaan5 leoi6
+乒乓球	ping1pang1qiu2	乒乓波 bing1 bam1 bo1
+馬虎,马虎	ma3hu5	求其 kau4 kei4
+猴子	hou2zi5	馬騮 maa5 lau1
+
+# HSK 5 words, reviewed from tools/suggest_colloquial.py
+包子	bao1zi5	包 baau1
+來自,来自	lai2zi4	嚟自 lai4 zi6
+裝,装	zhuang1	扮 baan6 (pretend)
+倒	dao4	斟 zam1 (pour a drink)
+接著,接着	jie1zhe5	跟住 gan1 zyu6
+背	bei1	孭 me1 (carry on the back)
+食物	shi2wu4	嘢食 je5 sik6
+可怕	ke3pa4	得人驚 dak1 jan4 geng1
+喊	han3	嗌 aai3 (shout)
+答應,答应	da1ying5	應承 jing1 sing4
+不好意思	bu4hao3yi4si5	唔好意思 m4 hou2 ji3 si3
+點頭,点头	dian3tou2	岌頭 ngap6 tau4
+難看,难看	nan2kan4	核突 wat6 dat6 | 難睇 naan4 tai2
+碰見,碰见	peng4jian4	撞見 zong6 gin3 | 撞到 zong6 dou2
+短信	duan3xin4	短訊 dyun2 seon3
+拍	pai1	影 jing2 (take photos)
+整個,整个	zheng3ge4	成個 seng4 go3
+曾經,曾经	ceng2jing1	試過 si3 gwo3 (have done before)
+相當,相当	xiang1dang1	幾 gei2 (quite)
+老闆,老板	lao3ban3	老細 lou5 sai3
+要是	yao4shi5	若果 joek6 gwo2 | 如果 jyu4 gwo2
+繫,系	ji4	綁 bong2 (tie)
+姑娘	gu1niang5	女仔 neoi5 zai2 (girl)
+簡直,简直	jian3zhi2	直頭 zik6 tau4 | 直情 zik6 cing4
+幸運,幸运	xing4yun4	好彩 hou2 coi2
+立刻	li4ke4	即刻 zik1 hak1
+反正	fan3zheng4	橫掂 waang4 dim6
+趕緊,赶紧	gan3jin3	快啲 faai3 di1
+不必	bu4bi4	唔使 m4 sai2
+存	cun2	儲 cyu5 (save up)
+趕快,赶快	gan3kuai4	快啲 faai3 di1
+計算,计算	ji4suan4	計 gai3 | 計數 gai3 sou3
+據說,据说	ju4shuo1	聽講 teng1 gong2 | 據講 geoi3 gong2
+去世	qu4shi4	過身 gwo3 san1
+可靠	ke3kao4	穩陣 wan2 zan6 (safe bet)
+球迷	qiu2mi2	波迷 bo1 mai4
+屋子	wu1zi5	屋 uk1
+家鄉,家乡	jia1xiang1	鄉下 hoeng1 haa2
+吵架	chao3jia4	嗌交 aai3 gaau1 | 鬧交 naau6 gaau1
+從前,从前	cong2qian2	舊時 gau6 si4
+被子	bei4zi5	被 pei5
+木頭,木头	mu4tou5	木 muk6
+武術,武术	wu3shu4	功夫 gung1 fu1
+房東,房东	fang2dong1	業主 jip6 zyu2 | 屋主 uk1 zyu2
+結實,结实	jie1shi5	實淨 sat6 zeng6
+本領,本领	ben3ling3	本事 bun2 si6
+划船	hua2chuan2	扒艇 paa4 teng5
+看來,看来	kan4lai5	睇落 tai2 lok6 | 睇嚟 tai2 lai4
+導致,导致	dao3zhi4	令到 ling6 dou3
+移動,移动	yi2dong4	郁 juk1
+呼吸	hu1xi1	透氣 tau3 hei3
+蓋,盖	gai4	起 hei2 (build) | 冚 kam2 (cover)
+不然	bu4ran2	唔係 m4 hai6 (otherwise)
+如今	ru2jin1	而家 ji4 gaa1 | 今時今日 gam1 si4 gam1 jat6
+伙伴	huo3ban4	拍檔 paak3 dong3
+腦袋,脑袋	nao3dai5	頭 tau4 | 頭殼 tau4 hok3
+想念	xiang3nian4	掛住 gwaa3 zyu6
+玉米	yu4mi3	粟米 suk1 mai5
+小伙子		後生仔 hau6 saang1 zai2
+說不定,说不定	shuo1bu5ding4	話唔定 waa6 m4 ding6 | 唔定 m4 ding6
+汽油	qi4you2	電油 din6 jau4
+骨頭,骨头	gu3tou5	骨 gwat1
+了不起	liao3bu5qi3	犀利 sai1 lei6 | 巴閉 baa1 bai3
+幼兒園,幼儿园	you4er2yuan2	幼稚園 jau3 zi6 jyun2
+影子	ying3zi5	影 jing2
+手套	shou3tao4	手襪 sau2 mat6
+陽台,阳台	yang2tai2	露台 lou6 toi4
+名片	ming2pian4	咭片 kaat1 pin2
+尾巴	wei3ba5	尾 mei5
+節省,节省	jie2sheng3	慳 haan1
+圍巾,围巾	wei2jin1	頸巾 geng2 gan1
+稱讚,称赞	cheng1zan4	讚 zaan3
+不要緊,不要紧	bu4yao4jin3	唔緊要 m4 gan2 jiu3
+小吃	xiao3chi1	小食 siu2 sik6
+黃瓜,黄瓜	huang2gua1	青瓜 ceng1 gwaa1
+動畫片,动画片	dong4hua4pian4	卡通 kaa1 tung1
+郵局,邮局	you2ju2	郵政局 jau4 zing3 guk6
+調皮,调皮	tiao2pi2	百厭 baak3 jim3 | 曳 jai5
+光盤,光盘	guang1pan2	光碟 gwong1 dip2
+看不起	kan4bu5qi3	睇小 tai2 siu2 | 睇唔起 tai2 m4 hei2
+能幹,能干	neng2gan4	叻 lek1
+尺子	chi3zi5	間尺 gaan3 cek3
+享受	xiang3shou4	歎 taan3 (enjoy)
+棒	bang4	正 zeng3 (great) | 勁 ging6
+顆,颗	ke1	粒 nap1
+恨	hen4	憎 zang1
+吐	tu4	嘔 au2 (vomit)
+欠	qian4	爭 zaang1 (owe)
+一輩子,一辈子	yi1bei4zi5	一世 jat1 sai3 | 成世 seng4 sai3
+罵,骂	ma4	鬧 naau6
+駕駛,驾驶	jia4shi3	揸 zaa1 (drive)
+摔	shuai1	跌 dit3 (fall)
+繞,绕	rao4	兜 dau1 (go around)
+糟糕	zao1gao1	弊 bai6 | 弊傢伙 bai6 gaa1 fo2
+擁抱,拥抱	yong1bao4	攬 laam2
+匹	pi3	隻 zek3
+鍋,锅	guo1	鑊 wok6 (wok) | 煲 bou1 (pot)
+醜,丑	chou3	樣衰 joeng6 seoi1 | 核突 wat6 dat6
+辭職,辞职	ci2zhi2	辭工 ci4 gung1
+電池,电池	dian4chi2	電芯 din6 sam1
+忍不住	ren3bu5zhu4	忍唔住 jan2 m4 zyu6
+蔬菜	shu1cai4	菜 coi3
+臥室,卧室	wo4shi4	睡房 seoi6 fong2
+隔壁	ge2bi4	隔籬 gaak3 lei4
+土豆	tu3dou4	薯仔 syu4 zai2
+客廳,客厅	ke4ting1	廳 teng1
+罰款,罚款	fa2kuan3	罰錢 fat6 cin2
+掙錢,挣钱	zheng4qian2	搵錢 wan2 cin2 | 搵食 wan2 sik6 (make a living)
+大象	da4xiang4	大笨象 daai6 ban6 zoeng6
+捨不得,舍不得	she3bu5de5	唔捨得 m4 se2 dak1
+剪刀	jian3dao1	鉸剪 gaau3 zin2
+除夕	chu2xi1	年三十晚 nin4 saam1 sap6 maan5 | 年卅晚 nin4 saa1 maan5
+不耐煩,不耐烦	bu4nai4fan2	唔耐煩 m4 noi6 faan4
+竹子	zhu2zi5	竹 zuk1
+鼠標,鼠标	shu3biao1	滑鼠 waat6 syu2
+扇子	shan4zi5	扇 sin3
+叉子	cha1zi5	叉 caa1
+烤鴨,烤鸭	kao3ya1	燒鴨 siu1 aap3
+憤怒,愤怒	fen4nu4	嬲 nau1 (angry)
+蹲	dun1	踎 mau1
+牽,牵	qian1	拖 to1 (by the hand)
+撿,捡	jian3	執 zap1
+舌頭,舌头	she2tou5	脷 lei6
+特意	te4yi4	特登 dak6 dang1 | 專登 zyun1 dang1
+凡是	fan2shi4	凡係 faan4 hai6
+傍晚	bang4wan3	挨晚 aai1 maan1 | 黃昏 wong4 fan1
+姑姑	gu1gu5	姑媽 gu1 maa1 (older) | 姑姐 gu1 ze1 (younger)
+醬油,酱油	jiang4you2	豉油 si6 jau4
+吻	wen3	錫 sek3 | 啜 zyut3
+公寓	gong1yu4	樓 lau2
+砍	kan3	斬 zaam2
+脖子	bo2zi5	頸 geng2
+甩	shuai3	揈 fing6 (swing, fling)
+要不	yao4bu4	一係 jat1 hai6 | 唔係嘅話 m4 hai6 ge3 waa6
+瞎	xia1	盲 maang4
+肩膀	jian1bang3	膊頭 bok3 tau4
+假裝,假装	jia3zhuang1	扮 baan6 | 詐 zaa3
+燙,烫	tang4	焫 naat3 (burn) | 滾 gwan2 (scalding)
+逗	dou4	撩 liu4 (tease) | 氹 tam3 (coax)
+卡車,卡车	ka3che1	貨車 fo3 ce1
+倒霉	dao3mei2	黑仔 hak1 zai2 | 衰 seoi1
+胳膊	ge1bo5	手臂 sau2 bei3 | 手瓜 sau2 gwaa1
+難怪,难怪	nan2guai4	怪唔得 gwaai3 m4 dak1 | 唔怪得 m4 gwaai3 dak1
+睜,睁	zheng1	擘 maak3 (open the eyes)
+撕	si1	搣 mit1
+糊塗,糊涂	hu2tu5	懵 mung2
+何必	he2bi4	使乜 sai2 mat1
+地毯	di4tan3	地氈 dei6 zin1
+翅膀	chi4bang3	翼 jik6
+項鏈,项链	xiang4lian4	頸鏈 geng2 lin2
+妨礙,妨碍	fang2ai4	阻 zo2
+車廂,车厢	che1xiang1	卡 kaa1 (train car)
+繩子,绳子	sheng2zi5	繩 sing2
+傳染,传染	chuan2ran3	惹 je5 (catch)
+癢,痒	yang3	痕 han4
+疲勞,疲劳	pi2lao2	攰 gui6
+櫃台,柜台	gui4tai2	櫃位 gwai6 wai2
+怪不得	guai4bu5de5	怪唔得 gwaai3 m4 dak1 | 唔怪得 m4 gwaai3 dak1
+澆,浇	jiao1	淋 lam4
+嗓子	sang3zi5	喉嚨 hau4 lung4
+救護車,救护车	jiu4hu4che1	白車 baak6 ce1
+寧可,宁可	ning4ke3	寧願 ning4 jyun6 | 情願 cing4 jyun6
+招待	zhao1dai4	招呼 ziu1 fu1
+時髦,时髦	shi2mao2	潮 ciu4 | 型 jing4
+擁擠,拥挤	yong1ji3	逼 bik1 | 逼人 bik1 jan4
+硬幣,硬币	ying4bi4	銀仔 ngan2 zai2
+迷路	mi2lu4	蕩失路 dong6 sat1 lou6
+英俊	ying1jun4	靚仔 leng3 zai2
+付款	fu4kuan3	畀錢 bei2 cin2
+眉毛	mei2mao5	眼眉 ngaan5 mei4
+鴿子,鸽子	ge1zi5	白鴿 baak6 gap2
+舅舅	jiu4jiu5	舅父 kau5 fu2
+抽屜,抽屉	chou1ti5	櫃桶 gwai6 tung2
+胡說,胡说	hu2shuo1	亂噏 lyun6 ngap1
+狡猾	jiao3hua2	蠱惑 gu2 waak6
+發抖,发抖	fa1dou3	震 zan3 | 打冷震 daa2 laang5 zan3
+灰塵,灰尘	hui1chen2	塵 can4 | 泥塵 nai4 can4
+輪流,轮流	lun2liu2	輪住 leon4 zyu6
+幸虧,幸亏	xing4kui1	好彩 hou2 coi2
+肥皂	fei2zao4	番梘 faan1 gaan2
+執照,执照	zhi2zhao4	牌 paai4 | 牌照 paai4 ziu3
+多虧,多亏	duo1kui1	多得 do1 dak1
+姥姥	lao3lao5	婆婆 po4 po2
+管子	guan3zi5	喉 hau4 (pipe)
+小氣,小气	xiao3qi4	孤寒 gu1 hon4
+零錢,零钱	ling2qian2	散紙 saan2 zi2 | 碎銀 seoi3 ngan2
+嚷	rang3	嗌 aai3
+吃虧,吃亏	chi1kui1	蝕底 sit6 dai2
+寺廟,寺庙	si4miao4	廟 miu2
+慌張,慌张	huang1zhang1	驚青 geng1 ceng1
+躲藏	duo3cang2	匿 nei1 (hide)
+發愁,发愁	fa1chou2	閉翳 bai3 ai3
+鞭炮	bian1pao4	炮仗 paau3 zoeng2
+不見得,不见得	bu4jian4de5	未必 mei6 bit1
+拐彎,拐弯	guai3wan1	轉彎 zyun3 waan1
+梳子	shu1zi5	梳 so1
+雷	lei2	雷公 leoi4 gung1
+摩托車,摩托车	mo2tuo1che1	電單車 din6 daan1 ce1
+兔子	tu4zi5	兔仔 tou3 zai2
+小偷	xiao3tou1	賊 caak6 | 賊仔 caak6 zai2
+車庫,车库	che1ku4	車房 ce1 fong4
+麥克風,麦克风	mai4ke4feng1	咪 mai1
+樣式,样式	yang4shi4	款 fun2
+疼愛,疼爱	teng2ai4	錫 sek3
+勺子	shao2zi5	匙羹 ci4 gang1 | 羹 gang1
+結賬,结账	jie2zhang4	埋單 maai4 daan1
+打噴嚏,打喷嚏	da3pen1ti4	打乞嗤 daa2 hat1 ci1
+夾子,夹子	jia1zi5	夾 gaap2
+胡同	hu2tong4	巷 hong2
+著涼,着凉	zhao2liang2	凍親 dung3 can1 | 冷親 laang5 can1
+粘貼,粘贴	zhan1tie1	黐 ci1 (stick)
+禮拜天,礼拜天	li3bai4tian1	禮拜日 lai5 baai3 jat6
+勞駕,劳驾	lao2jia4	唔該 m4 goi1
+
+# HSK 6 words, reviewed from tools/suggest_colloquial.py
+左右	zuo3you4	度 dou6 (about) | 上下 soeng6 haa2
+束	shu4	紮 zaat3 (a bunch)
+將近,将近	jiang1jin4	差唔多 caa1 m4 do1
+故鄉,故乡	gu4xiang1	鄉下 hoeng1 haa2
+人家	ren2jia5	人哋 jan4 dei6
+即將,即将	ji2jiang1	就快 zau6 faai3
+噁心,恶心	e3xin1	核突 wat6 dat6 | 肉酸 juk6 syun1
+折	zhe2	拗 aau2 (snap)
+測量,测量	ce4liang2	度 dok6 (measure)
+修理	xiu1li3	整 zing2 | 維修 wai4 sau1
+難免,难免	nan2mian3	少不免 siu2 bat1 min5
+新郎	xin1lang2	新郎哥 san1 long4 go1
+延期	yan2qi1	押後 aat3 hau6
+倒閉,倒闭	dao3bi4	執笠 zap1 lap1
+堅固,坚固	jian1gu4	實淨 sat6 zeng6
+開水,开水	kai1shui3	滾水 gwan2 seoi2
+紅包,红包	hong2bao1	利是 lai6 si6
+抱怨	bao4yuan4	呻 san3
+動手,动手	dong4shou3	郁手 juk1 sau2
+扮演	ban4yan3	扮 baan6
+不止	bu4zhi3	唔止 m4 zi2
+按摩	an4mo2	鬆骨 sung1 gwat1 | 㩒骨 gam6 gwat1
+過於,过于	guo4yu2	太過 taai3 gwo3
+一向	yi1xiang4	不嬲 bat1 nau1
+裁判	cai2pan4	球證 kau4 zing3 (referee)
+漫畫,漫画	man4hua4	公仔書 gung1 zai2 syu1
+珍貴,珍贵	zhen1gui4	矜貴 ging1 gwai3
+當場,当场	dang1chang3	當堂 dong1 tong4
+打架	da3jia4	打交 daa2 gaau1
+阻礙,阻碍	zu3ai4	阻 zo2
+近來,近来	jin4lai2	近排 gan6 paai2
+跟隨,跟随	gen1sui2	跟 gan1
+誤解,误解	wu4jie3	會錯意 wui6 co3 ji3
+值班	zhi2ban1	當更 dong1 gaang1
+拾	shi2	執 zap1
+時常,时常	shi2chang2	成日 seng4 jat6 | 時時 si4 si4
+不時,不时	bu4shi2	間唔中 gaan3 m4 zung1
+颱風,台风	tai2feng1	打風 daa2 fung1 (when it hits)
+心疼	xin1teng2	心痛 sam1 tung3 | 肉痛 juk6 tung3 (over money)
+押金	ya1jin1	按金 on3 gam1
+羽絨服,羽绒服	yu3rong2fu2	羽絨褸 jyu5 jung4 lau1
+給予,给予	ji3yu3	畀 bei2
+扎	zha1	拮 gat1 (prick)
+收藏	shou1cang2	收埋 sau1 maai4 (put away)
+潛力,潜力	qian2li4	潛質 cim4 zat1
+算了	suan4le5	算數 syun3 sou3 | 算啦 syun3 laa1
+混合	hun4he2	撈埋 lou1 maai4 (mix)
+抵達,抵达	di3da2	到 dou3 | 到埗 dou3 bou6
+欺負,欺负	qi1fu5	蝦 haa1
+佔據,占据	zhan4ju4	霸 baa3 (take up)
+賭博,赌博	du3bo2	賭錢 dou2 cin2
+搭檔,搭档	da1dang4	拍檔 paak3 dong3
+水泥	shui3ni2	英泥 jing1 nai4
+隱私,隐私	yin3si1	私隱 si1 jan2
+素質,素质	su4zhi4	質素 zat1 sou3
+維生素,维生素	wei2sheng1su4	維他命 wai4 taa1 ming6
+薪水	xin1shui3	人工 jan4 gung1 | 糧 loeng4
+要不然	yao4bu4ran2	唔係嘅話 m4 hai6 ge3 waa6 | 一係 jat1 hai6
+祖父	zu3fu4	阿爺 aa3 je4
+扎實,扎实	zha1shi5	實淨 sat6 zeng6
+不料	bu4liao4	點知 dim2 zi1
+端午節,端午节	duan1wu3jie2	五月節 ng5 jyut6 zit3
+而已	er2yi3	啫 ze1 | 咋 zaa3
+傢伙,家伙	jia1huo5	條友 tiu4 jau2
+砸	za2	打爛 daa2 laan6 (smash)
+艘	sou1	隻 zek3
+嬰兒,婴儿	ying1er2	蘇蝦仔 sou1 haa1 zai2
+懷孕,怀孕	huai2yun4	有咗 jau5 zo2 | 大肚 daai6 tou5
+搶劫,抢劫	qiang3jie2	打劫 daa2 gip3
+監獄,监狱	jian1yu4	監倉 gaam1 cong1
+逮捕	dai4bu3	拉 laai1 (arrest)
+坑	keng1	氹 tam5
+欺騙,欺骗	qi1pian4	呃 ngaak1
+拋棄,抛弃	pao1qi4	掉 deu6
+懲罰,惩罚	cheng2fa2	罰 fat6
+熬	ao2	捱 ngaai4 (endure) | 煲 bou1 (simmer)
+角落	jiao3luo4	角落頭 gok3 lok1 tau2
+窩,窝	wo1	竇 dau3
+拼命	pin1ming4	搏命 bok3 meng6
+捏	nie1	搣 mit1 (pinch)
+輪胎,轮胎	lun2tai1	呔 taai1
+趴	pa1	伏 buk6
+渾身,浑身	hun2shen1	周身 zau1 san1
+流氓	liu2mang2	爛仔 laan6 zai2
+宰	zai3	劏 tong1
+酒精	jiu3jing1	火酒 fo2 zau2 (rubbing alcohol)
+頗,颇	po1	幾 gei2
+溜	liu1	鬆人 sung1 jan4 | 走人 zau2 jan4
+幸好	xing4hao3	好彩 hou2 coi2
+愚蠢	yu2chun3	蠢 ceon2
+膝蓋,膝盖	xi1gai4	膝頭 sat1 tau4 | 膝頭哥 sat1 tau4 go1
+嘔吐,呕吐	ou3tu4	嘔 au2
+揍	zou4	打 daa2 | 砌 cai3 (beat up)
+哄	hong3	氹 tam3 (coax)
+氣味,气味	qi4wei4	味 mei6
+思念	si1nian4	掛住 gwaa3 zyu6
+剎車,刹车	sha1che1	煞掣 saat3 zai3
+盛	cheng2	裝 zong1 (ladle in)
+樣品,样品	yang4pin3	辦 baan2 (sample)
+泡沫	pao4mo4	泡 pou5
+舔	tian3	舐 lem2
+擰,拧	ning3	扭 nau2 (twist)
+復活,复活	fu4huo2	翻生 faan1 saang1
+作弊	zuo4bi4	出貓 ceot1 maau1
+扛	kang2	托 tok3
+帳篷,帐篷	zhang4peng5	營幕 jing4 mok6 | 帳幕 zoeng3 mok6
+要命	yao4ming4	攞命 lo2 meng6
+顫抖,颤抖	chan4dou3	震 zan3
+品嚐,品尝	pin3chang2	試 si3
+撒謊,撒谎	sa1huang3	講大話 gong2 daai6 waa6
+固執,固执	gu4zhi2	硬頸 ngaang6 geng2
+把手	ba3shou5	揸手 zaa1 sau2 | 手柄 sau2 beng3
+鈔票,钞票	chao1piao4	銀紙 ngan4 zi2
+琢磨	zuo2mo5	諗 nam2 (ponder)
+雙胞胎,双胞胎	shuang1bao1tai1	孖生 maa1 saang1 | 孖仔 maa1 zai2
+迫不及待	po4bu4ji2dai4	急不及待 gap1 bat1 kap6 doi6
+起初	qi3chu1	初頭 co1 tau4 | 初時 co1 si4
+株	zhu1	樖 po1
+丟人,丢人	diu1ren2	丟架 diu1 gaa2 | 失禮 sat1 lai5
+款式	kuan3shi4	款 fun2
+揉	rou2	搓 caai1 (knead) | 捽 zeot1 (rub)
+抵制	di3zhi4	杯葛 bui1 got3
+傾斜,倾斜	qing1xie2	斜 ce3
+豎,竖	shu4	戙 dung6 (stand upright)
+摟,搂	lou3	攬 laam2
+讚揚,赞扬	zan4yang2	讚 zaan3
+當心,当心	dang1xin1	因住 jan1 zyu6
+叼	diao1	擔 daam1 (in the mouth)
+堵塞	du3se4	塞 sak1
+磕	ke1	扻 ham2 (bump)
+過濾,过滤	guo4lv4	隔 gaak3 (filter)
+鎮定,镇定	zhen4ding4	淡定 daam6 ding6
+嘮叨,唠叨	lao2dao5	長氣 coeng4 hei3 | 吟 ngam4
+關照,关照	guan1zhao4	睇住 tai2 zyu6
+心血	xin1xue4	心機 sam1 gei1
+預先,预先	yu4xian1	預早 jyu6 zou2
+發火,发火	fa1huo3	發脾氣 faat3 pei4 hei3 | 火滾 fo2 gwan2
+探望	tan4wang4	探 taam3
+狹窄,狭窄	xia2zhai3	窄 zaak3
+反駁,反驳	fan3bo2	駁 bok3
+埋怨	man2yuan4	呻 san3 | 怨 jyun3
+攪拌,搅拌	jiao3ban4	攪 gaau2 | 撈 lou1
+海濱,海滨	hai3bin1	海皮 hoi2 pei4 | 海邊 hoi2 bin1
+活該,活该	huo2gai1	抵死 dai2 sei2
+暢銷,畅销	chang4xiao1	好賣 hou2 maai6 | 搶手 coeng2 sau2
+合伙		夾份 gaap3 fan6
+乞丐	qi3gai4	乞兒 hat1 ji1
+攢,攒	zan3	儲 cyu5 (save up)
+牢固	lao2gu4	實淨 sat6 zeng6
+兌換,兑换	dui4huan4	找換 zaau2 wun6
+疲倦	pi2juan4	攰 gui6
+頑固,顽固	wan2gu4	硬頸 ngaang6 geng2
+搓	cuo1	捽 zeot1
+掰	bai1	擘 maak3
+昆蟲,昆虫	kun1chong2	蟲 cung4
+解僱,解雇	jie3gu4	炒魷魚 caau2 jau4 jyu2 | 炒 caau2
+鉤子,钩子	gou1zi5	鉤 ngau1
+鼻涕	bi2ti4	鼻水 bei6 seoi2
+冤枉	yuan1wang5	屈 wat1
+話筒,话筒	hua4tong3	咪 mai1
+討價還價,讨价还价	tao3jia4huan2jia4	講價 gong2 gaa3
+搗亂,捣乱	dao3luan4	搞搞震 gaau2 gaau2 zan3
+媳婦,媳妇	xi2fu4	心抱 sam1 pou5
+腹瀉,腹泻	fu4xie4	肚屙 tou5 o1 | 屙肚 o1 tou5
+擱,搁	ge1	擺 baai2
+惦記,惦记	dian4ji4	掛住 gwaa3 zyu6
+懶惰,懒惰	lan3duo4	懶 laan5
+可口	ke3kou3	好味 hou2 mei6 | 好食 hou2 sik6
+焦急	jiao1ji2	心急 sam1 gap1
+吹牛	chui1niu2	車大炮 ce1 daai6 paau3 | 吹水 ceoi1 seoi2
+逝世	shi4shi4	過身 gwo3 san1
+淘氣,淘气	tao2qi4	百厭 baak3 jim3 | 曳 jai5
+嫂子	sao3zi5	阿嫂 aa3 sou2
+胸膛	xiong1tang2	心口 sam1 hau2
+虧損,亏损	kui1sun3	蝕 sit6 (lose money)
+浸泡	jin4pao4	浸 zam3
+阻攔,阻拦	zu3lan2	阻 zo2
+岳父	yue4fu4	外父 ngoi6 fu2
+素食	su4shi2	齋 zaai1
+拐杖	guai3zhang4	士的 si6 dik1
+理睬	li3cai3	理 lei5 | 睬 coi2
+恰巧	qia4qiao3	咁啱 gam3 ngaam1
+辮子,辫子	bian4zi5	辮 bin1
+機靈,机灵	ji1ling5	醒目 sing2 muk6 | 精 zeng1
+水龍頭,水龙头	shui3long2tou2	水喉 seoi2 hau4
+膽怯,胆怯	dan3qie4	淆底 ngaau4 dai2 (lose nerve)
+遷就,迁就	qian1jiu4	就住 zau6 zyu6
+威風,威风	wei1feng1	威 wai1 | 威水 wai1 seoi2
+用功	yong4gong1	勤力 kan4 lik6
+靠攏,靠拢	kao4long3	埋 maai4 (close in)
+家喻戶曉,家喻户晓	jia1yu4hu4xiao3	街知巷聞 gaai1 zi1 hong6 man4
+略微	lve4wei1	略略 loek6 loek6 | 少少 siu2 siu2
+兇惡,凶恶	xiong1e4	惡 ok3
+停泊	ting2bo2	泊 paak3
+巴不得	ba1bu5de5	恨唔得 han6 m4 dak1
+吃苦	chi1ku3	捱苦 ngaai4 fu2
+饞,馋	chan2	為食 wai6 sik6
+哆嗦	duo1suo5	震 zan3 | 打冷震 daa2 laang5 zan3
+神氣,神气	shen2qi4	威水 wai1 seoi2
+吹捧	chui1peng3	擦鞋 caat3 haai4 | 托大腳 tok3 daai6 goek3
+沒轍,没辙	mei2zhe2	冇計 mou5 gai2 | 冇符 mou5 fu4
+傷腦筋,伤脑筋	shang1nao3jin1	頭痕 tau4 han4 | 頭大 tau4 daai6
+無精打采,无精打采	wu2jing1da3cai3	冇厘神氣 mou5 lei4 san4 hei3
+伯母	bo2mu3	伯娘 baak3 noeng4
+請帖,请帖	qing3tie3	喜帖 hei2 tip3 (wedding)
+精打細算,精打细算	jing1da3xi4suan4	知慳識儉 zi1 haan1 sik1 gim6
+曠課,旷课	kuang4ke4	走堂 zau2 tong4 | 逃學 tou4 hok6
+東張西望,东张西望	dong1zhang1xi1wang4	周圍望 zau1 wai4 mong6 | 眈天望地 daam1 tin1 mong6 dei6
+農曆,农历	nong2li4	舊曆 gau6 lik6
+旗袍	qi2pao2	長衫 coeng4 saam1
+爐灶,炉灶	lu2zao4	爐頭 lou4 tau4
+餡兒,馅儿		餡 haam2
+屁股	pi4gu5	屎忽 si2 fat1 | 囉柚 lo1 jau2
+孔	kong3	窿 lung1
+標記,标记	biao1ji4	記認 gei3 jing6
+棕色	zong1se4	啡色 fe1 sik1
+油漆	you2qi1	油 jau4 (paint)
+鎮靜,镇静	zhen4jing4	淡定 daam6 ding6
+陷害	xian4hai4	屈 wat1 | 砌生豬肉 cai3 saang1 zyu1 juk6
+做主	zuo4zhu3	話事 waa6 si6
+揮霍,挥霍	hui1huo4	大使 daai6 sai2
+惱火,恼火	nao3huo3	火滾 fo2 gwan2 | 嬲 nau1
+捆綁,捆绑	kun3bang3	綁 bong2
+鋒利,锋利	feng1li4	利 lei6
+柴油	chai2you2	油渣 jau4 zaa1
+發呆,发呆	fa1dai1	發吽哣 faat3 ngau6 dau6
+連同,连同	lian2tong2	連埋 lin4 maai4
+踐踏,践踏	jian4ta4	踩 caai2
+造反	zao4fan3	作反 zok3 faan2
+咀嚼	ju3jue2	噍 ziu6
+吝嗇,吝啬	lin4se4	孤寒 gu1 hon4
+糟蹋	zao1ta4	糟質 zou1 zat1 | 嘥 saai1
+草率	cao3shuai4	求其 kau4 kei4
+喘氣,喘气	chuan3qi4	抖氣 tau2 hei3
+蔑視,蔑视	mie4shi4	睇小 tai2 siu2
+投擲,投掷	tou2zhi4	掟 deng3
+瘸	que2	跛 bai1
+嘈雜,嘈杂	cao2za2	嘈 cou4
+合身	he2shen1	啱身 ngaam1 san1
+冰雹	bing1bao2	雹 bok6
+熨	yun4	燙 tong3
+誣陷,诬陷	wu1xian4	屈 wat1 | 砌生豬肉 cai3 saang1 zyu1 juk6
+閒話,闲话	xian2hua4	是非 si6 fei1 (gossip) | 閒偈 haan4 gai2 (chat)
+蓋章,盖章	gai4zhang1	扱印 kap1 jan3
+服氣,服气	fu2qi4	服 fuk6
+熱淚盈眶,热泪盈眶	re4lei4ying2kuang4	眼濕濕 ngaan5 sap1 sap1
+剎那,刹那	cha4na4	霎時間 saap3 si4 gaan3
+合算	he2suan4	抵 dai2 | 著數 zoek6 sou3
+耐用	nai4yong4	襟用 kam1 jung6
+省會,省会	sheng3hui4	省城 saang2 seng4
+壓歲錢,压岁钱	ya1sui4qian2	利是 lai6 si6
+稻穀,稻谷	dao4gu3	穀 guk1
+螺絲釘,螺丝钉	luo2si1ding1	螺絲 lo4 si1
+成心	cheng2xin1	特登 dak6 dang1 | 有心 jau5 sam1
+囉唆,啰唆	luo1suo5	長氣 coeng4 hei3
+攤兒,摊儿		攤檔 taan1 dong3 | 檔 dong3
+
+# HSK 3.0 level 1 words not in HSK 2.0, reviewed from tools/suggest_colloquial.py
+天	tian1	日 jat6 (day)
+看到	kan4dao4	見到 gin3 dou2 | 睇到 tai2 dou2
+出來,出来	chu1lai2	出嚟 ceot1 lai4
+早	zao3	早晨 zou2 san4 (good morning)
+們,们	men5	哋 dei6 (after a pronoun)
+睡	shui4	瞓 fan3
+球	qiu2	波 bo1
+別的,别的	bie2de5	第二啲 dai6 ji6 di1 | 第二 dai6 ji6
+晚	wan3	夜 je6 (late at night) | 遲 ci4 (late)
+動,动	dong4	郁 juk1
+真的	zhen1de5	真係 zan1 hai6
+汽車,汽车	qi4che1	車 ce1
+常	chang2	成日 seng4 jat6 | 時時 si4 si4
+家人	jia1ren2	屋企人 uk1 kei2 jan4
+進去,进去	jin4qu4	入去 jap6 heoi3
+沒什麼,没什么	mei2shen2me5	冇乜嘢 mou5 mat1 je5 | 冇乜 mou5 mat1
+有時候,有时候	you3shi2hou5	有陣時 jau5 zan6 si4
+進來,进来	jin4lai2	入嚟 jap6 lai4
+地上	di4shang5	地下 dei6 haa2
+老人	lao3ren2	老人家 lou5 jan4 gaa1
+那邊,那边	na4bian5	嗰邊 go2 bin1 | 嗰度 go2 dou6
+不對,不对	bu4dui4	唔啱 m4 ngaam1
+常常	chang2chang2	成日 seng4 jat6 | 時時 si4 si4
+這邊,这边	zhe4bian1	呢邊 ni1 bin1 | 呢度 ni1 dou6
+上課,上课	shang4ke4	上堂 soeng5 tong4
+下班	xia4ban1	放工 fong3 gung1
+坐下	zuo4xia5	坐低 co5 dai1
+白天	bai2tian1	日頭 jat6 tau2
+哪些	na3xie1	邊啲 bin1 di1
+走路	zou3lu4	行路 haang4 lou6
+不大	bu4da4	唔多 m4 do1 | 唔係幾 m4 hai6 gei2
+午飯,午饭	wu3fan4	晏晝飯 aan3 zau3 faan6 | 午餐 ng5 caan1
+打球	da3qiu2	打波 daa2 bo1
+路口	lu4kou3	街口 gaai1 hau2
+關上,关上	guan1shang4	閂埋 saan1 maai4
+半天	ban4tian1	半日 bun3 jat6
+車票,车票	che1piao4	車飛 ce1 fei1
+電影院,电影院	dian4ying3yuan4	戲院 hei3 jyun2
+下課,下课	xia4ke4	落堂 lok6 tong4
+裡邊,里边	li3bian5	入面 jap6 min6
+沒事兒,没事儿		冇事 mou5 si6
+外邊,外边	wai4bian5	出面 ceot1 min6
+本子	ben3zi5	簿 bou2
+星期日	xing1qi1ri4	禮拜日 lai5 baai3 jat6
+打車,打车	da3che1	搭的士 daap3 dik1 si2 | 截的士 zit6 dik1 si2
+女孩兒,女孩儿		女仔 neoi5 zai2
+漢字,汉字	han4zi4	中文字 zung1 man4 zi6
+小孩兒,小孩儿		細路 sai3 lou6
+有一些	you3yi1xie1	有啲 jau5 di1
+男孩兒,男孩儿		男仔 naam4 zai2
+
+# HSK 3.0 level 2 words not in HSK 2.0, reviewed from tools/suggest_colloquial.py
+不錯,不错	bu4cuo4	唔錯 m4 co3 | 幾好 gei2 hou2
+剛,刚	gang1	啱啱 ngaam1 ngaam1 | 啱 ngaam1 (just now)
+不同	bu4tong2	唔同 m4 tung4
+人們,人们	ren2men5	啲人 di1 jan4
+能夠,能够	neng2gou4	可以 ho2 ji5
+選,选	xuan3	揀 gaan2
+卡	ka3	咭 kaat1 (card)
+過來,过来	guo4lai2	過嚟 gwo3 lai4 | 埋嚟 maai4 lai4
+想到	xiang3dao4	諗到 nam2 dou2
+那樣,那样	na4yang4	噉樣 gam2 joeng2 | 噉 gam2
+氣,气	qi4	激 gik1 (make angry)
+怎樣,怎样	zen3yang4	點樣 dim2 joeng2 | 點 dim2
+越來越,越来越	yue4lai2yue4	越嚟越 jyut6 lai4 jyut6
+不少	bu4shao3	唔少 m4 siu2
+晚安	wan3an1	早唞 zou2 tau2
+留下	liu2xia4	留低 lau4 dai1
+聽說,听说	ting1shuo1	聽講 teng1 gong2 | 聽聞 teng1 man4
+瓶	ping2	樽 zeon1
+不夠,不够	bu4gou4	唔夠 m4 gau3
+想法	xiang3fa3	諗法 nam2 faat3
+不行	bu4xing2	唔得 m4 dak1 | 唔掂 m4 dim6
+長大,长大	zhang3da4	大個 daai6 go3
+佔,占	zhan4	霸 baa3 (take up)
+想起	xiang3qi3	諗起 nam2 hei2 | 醒起 sing2 hei2
+那時,那时	na4shi2	嗰陣 go2 zan6 | 嗰時 go2 si4
+英語,英语	ying1yu3	英文 jing1 man2
+放下	fang4xia4	放低 fong3 dai1
+早就	zao3jiu4	一早 jat1 zou2
+的話,的话	de5hua4	嘅話 ge3 waa6
+多久	duo1jiu3	幾耐 gei2 noi6
+不久	bu4jiu3	冇幾耐 mou5 gei2 noi6 | 冇耐 mou5 noi6
+碰	peng4	掂 dim6 (touch) | 撞 zong6 (bump into)
+懂得	dong3de5	識 sik1
+夏天	xia4tian1	熱天 jit6 tin1
+早晨	zao3chen2	朝早 ziu1 zou2
+出門,出门	chu1men2	出街 ceot1 gaai1
+小時候,小时候	xiao3shi2hou5	細個 sai3 go3
+全身	quan2shen1	周身 zau1 san1
+停車,停车	ting2che1	泊車 paak3 ce1
+冬天	dong1tian1	冷天 laang5 tin1
+這時,这时	zhe4shi2	呢陣 ni1 zan6
+不一定	bu4yi1ding4	唔一定 m4 jat1 ding6 | 話唔定 waa6 m4 ding6
+計算機,计算机	ji4suan4ji1	計數機 gai3 sou3 gei1 (calculator) | 電腦 din6 nou5 (computer)
+午餐	wu3can1	晏晝飯 aan3 zau3 faan6 | 晏 aan3
+愛人,爱人	ai4ren5	老公 lou5 gung1 | 老婆 lou5 po4
+球場,球场	qiu2chang3	波場 bo1 coeng4
+住院	zhu4yuan4	入院 jap6 jyun2 | 留醫 lau4 ji1
+全家	quan2jia1	成家人 seng4 gaa1 jan4
+從小,从小	cong2xiao3	自細 zi6 sai3
+星星	xing1xing5	星 sing1
+快要	kuai4yao4	就快 zau6 faai3 | 就嚟 zau6 lai4
+做飯,做饭	zuo4fan4	煮飯 zyu2 faan6
+老是	lao3shi5	成日 seng4 jat6 | 總係 zung2 hai6
+壞人,坏人	huai4ren2	衰人 seoi1 jan4
+大衣	da4yi1	大褸 daai6 lau1 | 褸 lau1
+夜裡,夜里	ye4li5	夜晚 je6 maan5 | 晚黑 maan5 hak1
+下雪	xia4xue3	落雪 lok6 syut3
+老朋友	lao3peng2you5	老友 lou5 jau2 | 老友記 lou5 jau5 gei3
+走開,走开	zou3kai1	行開 haang4 hoi1
+小聲,小声	xiao3sheng1	細聲 sai3 seng1
+照相	zhao4xiang4	影相 jing2 soeng2
+藥店,药店	yao4dian4	藥房 joek6 fong4
+裡頭,里头	li3tou5	入面 jap6 min6
+站住	zhan4zhu4	企住 kei5 zyu6
+晴天	qing2tian1	好天 hou2 tin1
+方便麵,方便面	fang1bian4mian4	公仔麵 gung1 zai2 min6 | 即食麵 zik1 sik6 min6
+球鞋	qiu2xie2	波鞋 bo1 haai4
+春節,春节	chun1jie2	新年 san1 nin4 | 農曆新年 nung4 lik6 san1 nin4
+不太		唔多 m4 do1 | 唔係幾 m4 hai6 gei2
+那時候,那时候	na4shi2hou5	嗰陣時 go2 zan6 si4 | 嗰陣 go2 zan6
+有空兒,有空儿		得閒 dak1 haan4
+公交車,公交车	gong1jiao1che1	巴士 baa1 si2
+有一點兒,有一点儿		有啲 jau5 di1
+挺好	ting3hao3	幾好 gei2 hou2
+
+# HSK 3.0 level 3 words not in HSK 2.0, reviewed from tools/suggest_colloquial.py
+就是	jiu4shi4	即係 zik1 hai6 (that is) | 就係 zau6 hai6
+只是	zhi3shi4	只係 zi2 hai6 | 淨係 zing6 hai6
+美	mei3	靚 leng3 (pretty)
+只有	zhi3you3	得 dak1 (only have) | 淨係有 zing6 hai6 jau5
+美元	mei3yuan2	美金 mei5 gam1
+按	an4	撳 gam6
+抓	zhua1	捉 zuk1 (catch) | 揸 zaa1 (grab)
+下去	xia4qu4	落去 lok6 heoi3
+仍	reng2	仲 zung6
+僅,仅	jin3	淨係 zing6 hai6
+整	zheng3	成 seng4 (whole)
+空	kong1	吉 gat1 (empty)
+下面	xia4mian4	下低 haa6 dai1 | 下底 haa6 dai2
+壓,压	ya1	責 zaak3 (press down)
+付	fu4	畀 bei2 (pay)
+僅僅,仅仅	jin3jin3	淨係 zing6 hai6
+土	tu3	泥 nai4
+缺	que1	爭 zaang1 (short of)
+看上去	kan4shang5qu5	睇落 tai2 lok6 | 睇嚟 tai2 lai4
+看起來,看起来	kan4qi3lai5	睇落 tai2 lok6 | 睇起上嚟 tai2 hei2 soeng5 lai4
+談話,谈话	tan2hua4	傾偈 king1 gai2
+打破	da3po4	打爛 daa2 laan6
+整天	zheng3tian1	成日 seng4 jat6
+電視劇,电视剧	dian4shi4ju4	劇集 kek6 zaap6
+早已	zao3yi3	一早 jat1 zou2
+沒用,没用	mei2yong4	冇用 mou5 jung6
+不光	bu4guang1	唔單止 m4 daan1 zi2
+上衣	shang4yi1	衫 saam1
+搬家	ban1jia1	搬屋 bun1 uk1
+房租	fang2zu1	租 zou1 | 屋租 uk1 zou1
+沙子	sha1zi5	沙 saa1
+年底	nian2di3	年尾 nin4 mei5
+有的是	you3de5shi4	大把 daai6 baa2
+年初	nian2chu1	年頭 nin4 tau4
+老頭兒,老头儿		阿伯 aa3 baak3
+衣架	yi1jia4	衫架 saam1 gaa2

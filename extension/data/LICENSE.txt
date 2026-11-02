@@ -8,3 +8,15 @@ Changes from the original: per-character readings are re-ranked by the Mandarin
 reading they pair with (inferred from multi-character words, plus a few manual
 fixes in tools/char_overrides.tsv), definitions are dropped, and words whose
 reading can be rebuilt from their characters are left out.
+
+colloquial.tsv was reviewed by hand from suggestions drawn from:
+
+- 開放粵語詞典 (Open Cantonese Dictionary), https://kaifangcidian.com,
+  licensed Creative Commons Attribution 3.0
+- Wiktionary's dialectal synonym tables (Module:zh/data/dial-syn),
+  https://en.wiktionary.org, licensed Creative Commons Attribution-ShareAlike 4.0
+- CC-CEDICT, for the Mandarin readings, https://www.mdbg.net/chinese/dictionary?page=cc-cedict,
+  licensed Creative Commons Attribution-ShareAlike 4.0
+
+It is distributed under the Creative Commons Attribution-ShareAlike 4.0 license:
+http://creativecommons.org/licenses/by-sa/4.0/
