@@ -188,6 +188,8 @@
     observer = new MutationObserver(onMutations);
     observer.observe(document.documentElement, { childList: true, subtree: true, characterData: true });
     for (const type of ['pointerdown', 'mousedown', 'click']) document.addEventListener(type, onPointer, true);
+    // Starts the browser loading its voices, so they're ready by the first click.
+    if ('speechSynthesis' in window) speechSynthesis.getVoices();
     scanAll();
   }
 
@@ -728,7 +730,7 @@
       utterance.lang = 'zh-HK';
       const voice = findCantoneseVoice(voices);
       if (voice) utterance.voice = voice;
-      else toast('No Cantonese voice installed. On Windows, add "Chinese (Traditional, Hong Kong SAR)" under Settings → Time & language → Speech.');
+      else warnIfNoCantoneseVoice(voices);
     } else {
       utterance.lang = 'zh-CN';
       const voice = voices.find((v) => /^(zh[-_](cn|tw|sg)|cmn)/i.test(v.lang));
@@ -736,6 +738,21 @@
     }
     speechSynthesis.cancel();
     speechSynthesis.speak(utterance);
+  }
+
+  // Browsers load their voice list lazily: the first read on a page comes back empty
+  // even with a Cantonese voice installed, and the browser still finds that voice from
+  // utterance.lang. So only warn once the list has loaded and has no Cantonese voice.
+  function warnIfNoCantoneseVoice(voices) {
+    const warn = () => toast('No Cantonese voice installed. On Windows, add "Chinese (Traditional, Hong Kong SAR)" under Settings → Time & language → Speech.');
+    if (voices.length) {
+      warn();
+      return;
+    }
+    setTimeout(() => {
+      const loaded = speechSynthesis.getVoices();
+      if (loaded.length && !findCantoneseVoice(loaded)) warn();
+    }, 1000);
   }
 
   async function correct(entry) {

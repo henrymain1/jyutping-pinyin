@@ -1,4 +1,4 @@
-# Jyutping & Pinyin
+# Jyutping ⇄ Pinyin
 
 Adds the Cantonese reading (jyutping) under Mandarin pinyin on any web page, and the
 pinyin under jyutping. Made for learning Cantonese from Mandarin resources.
@@ -7,7 +7,7 @@ pinyin under jyutping. Made for learning Cantonese from Mandarin resources.
 
 ## Install
 
-Firefox: [Firefox Add-ons](https://addons.mozilla.org/firefox/search/?q=Jyutping%20%26%20Pinyin).
+Firefox: [Firefox Add-ons](https://addons.mozilla.org/firefox/search/?q=Jyutping%20Pinyin).
 Chrome and Edge versions aren't in their stores yet.
 
 ## Usage

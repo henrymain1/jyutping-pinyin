@@ -11,7 +11,7 @@ Packages (build with `python tools/package.py`):
 
 ## Name
 
-Jyutping & Pinyin
+Jyutping ⇄ Pinyin
 
 ## Summary
 
@@ -47,7 +47,7 @@ Firefox "Description" (Markdown allowed; the first 250 characters carry the main
 >
 > It stays idle on pages without Chinese text. The dictionary is built in, so nothing you read is sent anywhere.
 >
-> CC-Canto and the CC-CEDICT Cantonese readings © Pleco Inc. (cantonese.org), CC BY-SA 3.0. Not affiliated with any site named here.
+> CC-Canto and the CC-CEDICT Cantonese readings © Pleco Inc. (cantonese.org), CC BY-SA 3.0. Everyday Cantonese words chosen with help from 開放粵語詞典 (kaifangcidian.com, CC BY 3.0) and Wiktionary (CC BY-SA 4.0). Not affiliated with any site named here.
 
 ## Category
 
@@ -71,7 +71,7 @@ In `store/screenshots/`, 1280 × 800. Upload them in the order 1, 5, 2, 3, 4 so 
 1. `1-dictionary.png`: Jyutping under the pinyin in a dictionary entry: 行 xíng → hang4, 行 háng → hong4.
 2. `2-media-reader.png`: Words tapped in a video transcript, each with its Cantonese reading, and the everyday Cantonese word where it differs (是 → 係, 看 → 睇).
 3. `3-replace.png`: Pinyin switched off: the jyutping takes its place.
-4. `4-panel.png`: The panel: pinyin and jyutping switches, a switch for the current site, tone style, position, size, colour and Cantonese words.
+4. `4-panel.png`: The panel: switches for pinyin, jyutping and Cantonese words, an on/off button for the current site, tone style, position, size and colour.
 5. `5-other-sites.png`: Works on other sites too, here the MDBG dictionary: 銀行 yínháng → ngan4 hong4.
 
 Chrome also wants a small promo tile: `store/screenshots/promo-440x280.png`.
@@ -95,7 +95,7 @@ Chrome "Privacy practices" tab:
 | Host permission (all http/https sites) | Readings are added on whatever page shows pinyin or jyutping, so the extension has to be able to read pages. It stays idle on pages without Chinese text, and nothing it reads leaves the browser. Users can turn it off for any site from the panel. |
 | storage | Saves the user's display settings, the sites they turned it off for, and their corrections to readings. |
 | scripting | Starts the extension in tabs that were already open when it is installed, or when the user grants access to a site, so they don't have to reload. |
-| activeTab | Reads the current tab's address when the panel opens, to show that site's on/off switch. |
+| activeTab | Reads the current tab's address when the panel opens, to show that site's on/off button. |
 
 **Remote code:** No. All code is in the package.
 
@@ -104,7 +104,7 @@ unrelated purposes, and isn't used for creditworthiness or lending.
 
 **Privacy policy** (if a store asks for one, paste this or host it as a page):
 
-> Jyutping & Pinyin does not collect, store or send personal data. It reads the pages you visit only to find pinyin and jyutping, inside your browser. Your display settings and reading corrections are saved in your browser's own extension storage; settings sync through your browser account only if you have browser sync turned on. The dictionary is part of the extension and it makes no network requests of its own. "Click to hear" uses your browser's speech voices; some of those voices (for example Chrome's Google voices) run online, so the word being spoken goes to that voice provider.
+> Jyutping ⇄ Pinyin does not collect, store or send personal data. It reads the pages you visit only to find pinyin and jyutping, inside your browser. Your display settings and reading corrections are saved in your browser's own extension storage; settings sync through your browser account only if you have browser sync turned on. The dictionary is part of the extension and it makes no network requests of its own. "Click to hear" uses your browser's speech voices; some of those voices (for example Chrome's Google voices) run online, so the word being spoken goes to that voice provider.
 
 ---
 
@@ -114,4 +114,4 @@ unrelated purposes, and isn't used for creditworthiness or lending.
 >
 > The content script runs on all http/https pages but stays idle unless the page contains Chinese characters and text that parses as pinyin or jyutping; only then does it ask the background script for the dictionary. It sends nothing off the device.
 >
-> To try it: open https://www.mdbg.net/chinese/dictionary?page=worddict&wdqb=銀行 or https://en.wikipedia.org/wiki/Hong_Kong (the infobox). The Cantonese reading appears under the pinyin, and on Wikipedia the pinyin also appears under the jyutping. The toolbar panel has the Pinyin and Jyutping switches and an on/off switch for the current site.
+> To try it: open https://www.mdbg.net/chinese/dictionary?page=worddict&wdqb=銀行 or https://en.wikipedia.org/wiki/Hong_Kong (the infobox). The Cantonese reading appears under the pinyin, and on Wikipedia the pinyin also appears under the jyutping. The toolbar panel has the Pinyin and Jyutping switches and an on/off button for the current site.

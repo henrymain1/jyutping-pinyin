@@ -46,7 +46,8 @@ async function loadData() {
 }
 
 // The current tab hears about the change at once; other tabs pick it up from storage.
-api.commands.onCommand.addListener(async (command, tab) => {
+// Firefox for Android has no keyboard shortcuts (no commands API).
+api.commands?.onCommand.addListener(async (command, tab) => {
   const key = COMMAND_SETTINGS[command];
   if (!key) return;
   const current = await api.storage.sync.get({ [key]: true });

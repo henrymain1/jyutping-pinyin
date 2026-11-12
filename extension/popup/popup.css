@@ -54,6 +54,13 @@ body {
   font: 13px/1.4 "Segoe UI Variable Text", "Segoe UI", system-ui, -apple-system, sans-serif;
 }
 
+/* Firefox for Android opens the panel as a full-screen page: fill the width, and drop
+   the hover explanations, which a tap would leave stuck open. */
+@media (hover: none) and (pointer: coarse) {
+  body { width: auto; max-width: 520px; margin: 0 auto; }
+  [data-tip]::after { display: none; }
+}
+
 a { color: inherit; }
 
 button, .switch, .swatch, .custom {
@@ -81,10 +88,26 @@ button, .switch, .swatch, .custom {
   background: var(--accent); color: var(--on-accent);
   font: 600 19px/1 var(--hanzi);
 }
+.title { flex: 1; min-width: 0; }
 h1 { margin: 0; font-size: 15px; font-weight: 650; line-height: 1.25; }
 .status { margin: 1px 0 0; min-height: 17px; color: var(--muted); font-size: 12.5px; }
 
-/* "Allow" on the This site row, when Firefox hasn't been given access to the site yet */
+/* On or off for the site in this tab. Unlike the switches below it turns the whole
+   extension off, so it sits apart, in the header. */
+.power {
+  display: grid; place-items: center; flex: none;
+  width: 34px; height: 34px; padding: 0; border: 0; border-radius: 50%; cursor: pointer;
+  background: var(--chip); color: var(--faint);
+  transition: var(--press-motion), background-color 200ms var(--ease-out), color 200ms var(--ease-out);
+  --press: 0.88;
+}
+.power[aria-pressed="true"] { background: color-mix(in srgb, var(--accent) 14%, var(--bg)); color: var(--accent); }
+.power svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2.1; stroke-linecap: round; }
+.power:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.power.pop svg { animation: pop 380ms var(--ease-spring); }
+@media (prefers-reduced-motion: reduce) { .power.pop svg { animation: none; } }
+
+/* "Allow", in place of the power button when Firefox hasn't been given access to the site yet */
 .allow {
   flex: none; padding: 5px 14px; border-radius: 8px; cursor: pointer;
   border: 0; background: var(--accent); color: var(--on-accent);
@@ -93,7 +116,6 @@ h1 { margin: 0; font-size: 15px; font-weight: 650; line-height: 1.25; }
 }
 .allow:active { box-shadow: var(--shadow-press); }
 .allow:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-#site-row label { cursor: pointer; }
 
 /* specimen: a sample of each reading, with its switch at the end of its row */
 .specimen {
@@ -105,7 +127,8 @@ h1 { margin: 0; font-size: 15px; font-weight: 650; line-height: 1.25; }
   border: 1px solid var(--line); border-radius: 14px;
   background: var(--card);
 }
-.divider { grid-column: 3; grid-row: 1 / span 4; align-self: stretch; background: var(--line); }
+/* The divider stops above the Cantonese words row, whose label needs the room. */
+.divider { grid-column: 3; grid-row: 1 / span 3; align-self: stretch; background: var(--line); }
 .hz { font: 400 30px/1.1 var(--hanzi); }
 .py { color: var(--muted); font-size: 14px; }
 .jp { color: var(--jp); font-size: calc(14px * var(--scale, 0.9)); white-space: nowrap; }
@@ -131,6 +154,9 @@ h1 { margin: 0; font-size: 15px; font-weight: 650; line-height: 1.25; }
   .jp, .c-jp, .word-hz { color: color-mix(in srgb, var(--jp) 60%, white); }
 }
 .toggle-label { justify-self: end; color: var(--ink-2); font-size: 13.5px; font-weight: 500; cursor: pointer; }
+/* The Cantonese words row: label and switch in one element, so the explanation can hang
+   off it, spanning to the switch column so the switch lines up with the two above. */
+.toggle-row { grid-column: 2 / 6; display: flex; align-items: center; justify-content: flex-end; gap: 16px; cursor: pointer; }
 
 /* switch: the thumb stretches while held, then slides */
 .switch {
@@ -170,8 +196,8 @@ label.row { cursor: pointer; }
 
 /* A row's explanation: a small bubble that rises in above the row after a short pause,
    and leaves at once. Also shown when the row's switch has keyboard focus. */
-.row[data-tip] { position: relative; }
-.row[data-tip]::after {
+[data-tip] { position: relative; }
+[data-tip]::after {
   content: attr(data-tip);
   position: absolute; z-index: 10; left: 44px; bottom: calc(100% - 4px);
   width: max-content; max-width: 260px; padding: 8px 11px; border-radius: 9px;
@@ -181,14 +207,16 @@ label.row { cursor: pointer; }
   opacity: 0; translate: 0 4px; pointer-events: none;
   transition: opacity 120ms ease-out, translate 120ms ease-out;
 }
-.row[data-tip]:hover::after,
-.row[data-tip]:has(input:focus-visible)::after {
+[data-tip]:hover::after,
+[data-tip]:has(input:focus-visible)::after {
   opacity: 1; translate: 0 0;
   transition: opacity 180ms ease-out 450ms, translate 260ms var(--ease-out) 450ms;
 }
 @media (prefers-reduced-motion: reduce) {
-  .row[data-tip]::after, .row[data-tip]:hover::after { translate: 0 0; }
+  [data-tip]::after, [data-tip]:hover::after { translate: 0 0; }
 }
+/* In the sample box the row starts mid-panel, so its bubble hangs from the right. */
+.toggle-row[data-tip]::after { left: auto; right: -4px; }
 
 .icon {
   display: grid; place-items: center; flex: none;

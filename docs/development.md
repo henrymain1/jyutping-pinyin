@@ -4,6 +4,10 @@
 
 - Chrome / Edge: `chrome://extensions` → Developer mode → Load unpacked → `extension/`.
 - Firefox: `about:debugging#/runtime/this-firefox` → Load Temporary Add-on → `extension/manifest.json`.
+- Firefox for Android: with the phone connected over USB and USB debugging on in both Android
+  and Firefox, `npx web-ext run -t firefox-android --android-device <device id> -s extension`
+  ([Mozilla's guide](https://extensionworkshop.com/documentation/develop/developing-extensions-for-firefox-for-android/)).
+  There are no keyboard shortcuts on Android, and the panel opens as a full-screen page.
 
 ## Package
 

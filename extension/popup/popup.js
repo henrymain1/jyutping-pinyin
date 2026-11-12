@@ -131,12 +131,14 @@ function placeIndicator(seg) {
 
 // Turning a switch on pops the icon of the row it belongs to.
 function pop(input) {
-  if (!input.checked) return;
-  const icon = input.closest('.row')?.querySelector('.icon');
-  if (!icon) return;
-  icon.classList.remove('pop');
-  void icon.offsetWidth; // restart the animation
-  icon.classList.add('pop');
+  if (input.checked) replayPop(input.closest('.row')?.querySelector('.icon'));
+}
+
+function replayPop(el) {
+  if (!el) return;
+  el.classList.remove('pop');
+  void el.offsetWidth; // restart the animation
+  el.classList.add('pop');
 }
 
 function renderReading(el) {
@@ -157,6 +159,7 @@ function renderReading(el) {
 function bindControls() {
   $('#showPinyin').addEventListener('change', (e) => save({ showPinyin: e.target.checked }));
   $('#showJyutping').addEventListener('change', (e) => save({ showJyutping: e.target.checked }));
+  $('#showColloquial').addEventListener('change', (e) => save({ showColloquial: e.target.checked }));
 
   for (const seg of document.querySelectorAll('.seg')) {
     for (const button of seg.querySelectorAll('button')) {
@@ -188,10 +191,6 @@ function bindControls() {
     pop(e.target);
     save({ showAlternates: e.target.checked });
   });
-  $('#showColloquial').addEventListener('change', (e) => {
-    pop(e.target);
-    save({ showColloquial: e.target.checked });
-  });
   $('#speakOnClick').addEventListener('change', (e) => {
     pop(e.target);
     save({ speakOnClick: e.target.checked });
@@ -216,31 +215,34 @@ function isWebPage(url) {
   return Boolean(url && /^https?:$/.test(url.protocol));
 }
 
+const siteName = (url) => url.hostname.replace(/^www\./, '');
+
 function setStatus(text) {
   const status = $('#status');
   if (status.textContent !== text) status.textContent = text;
 }
 
-// Works out the This site row and the status line, then writes the line once so
-// it never blanks in between.
+// Works out the power button and the status line, then writes the line once so it
+// never blanks in between.
 async function refreshStatus() {
   const url = currentUrl();
-  const web = isWebPage(url);
-  $('#site-row').hidden = !web;
-  if (!web) {
+  const power = $('#site-power');
+  if (!isWebPage(url)) {
+    power.hidden = true;
+    $('#site-allow').hidden = true;
     setStatus('');
     return;
   }
   // Firefox lets people withhold access site by site; Chrome can too, from its own menu.
   const hasAccess = await api.permissions.contains({ origins: [`${url.origin}/*`] });
   const on = !(settings.offSites || []).includes(url.origin);
-  $('#site-name').textContent = url.hostname.replace(/^www\./, '');
-  $('#siteOn').checked = on;
-  $('#site-switch').hidden = !hasAccess;
+  power.setAttribute('aria-pressed', String(on));
+  power.setAttribute('aria-label', siteName(url));
+  power.hidden = !hasAccess;
   $('#site-allow').hidden = hasAccess;
 
   if (!hasAccess) return setStatus('Needs access to this site');
-  if (!on) return setStatus('Off on this site');
+  if (!on) return setStatus(`Off on ${siteName(url)}`);
   let stats = null;
   try {
     stats = await api.tabs.sendMessage(tab.id, { type: 'jp:stats' });
@@ -252,16 +254,19 @@ async function refreshStatus() {
   else setStatus(`${stats.count} on this page`);
 }
 
-function bindSiteRow() {
-  $('#siteOn').addEventListener('change', (e) => {
-    const { origin } = currentUrl();
+function bindSiteButton() {
+  const power = $('#site-power');
+  power.addEventListener('click', () => {
+    const url = currentUrl();
+    const on = power.getAttribute('aria-pressed') !== 'true';
     const off = new Set(settings.offSites || []);
-    if (e.target.checked) off.delete(origin);
-    else off.add(origin);
-    pop(e.target);
+    if (on) off.delete(url.origin);
+    else off.add(url.origin);
+    power.setAttribute('aria-pressed', String(on));
+    if (on) replayPop(power);
     save({ offSites: [...off] });
-    if (e.target.checked) setTimeout(refreshStatus, 900); // the page needs a moment to count
-    else setStatus('Off on this site');
+    if (on) setTimeout(refreshStatus, 900); // the page needs a moment to count
+    else setStatus(`Off on ${siteName(url)}`);
   });
   // permissions.request has to run straight from the click; the background script
   // starts the extension in the tab once access is granted.
@@ -330,6 +335,7 @@ function watchVoice() {
 
 // Shortcuts appear as tooltips on the two main switches.
 async function showShortcuts() {
+  if (!api.commands) return; // Firefox for Android has no shortcuts
   const commands = await api.commands.getAll();
   const keyFor = (name) => commands.find((c) => c.name === name)?.shortcut;
   for (const [id, command] of [['#pinyin-toggle', 'toggle-pinyin'], ['#jyutping-toggle', 'toggle-jyutping']]) {
@@ -362,7 +368,7 @@ api.storage.onChanged.addListener((changes, area) => {
 
 // Draw from the snapshot and take clicks straight away; storage and the tab follow.
 bindControls();
-bindSiteRow();
+bindSiteButton();
 render();
 watchVoice();
 showShortcuts();

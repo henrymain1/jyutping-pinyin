@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Jyutping & Pinyin",
+  "name": "Jyutping ⇄ Pinyin",
   "short_name": "Jyutping",
   "version": "1.5.3",
   "description": "Adds Cantonese jyutping next to Mandarin pinyin, and pinyin next to jyutping, on any page that shows them. Readings from CC-Canto.",
@@ -11,7 +11,7 @@
     "128": "icons/icon128.png"
   },
   "action": {
-    "default_title": "Jyutping & Pinyin",
+    "default_title": "Jyutping ⇄ Pinyin",
     "default_popup": "popup/popup.html",
     "default_icon": {
       "16": "icons/icon16.png",
@@ -48,6 +48,9 @@
       "data_collection_permissions": {
         "required": ["none"]
       }
+    },
+    "gecko_android": {
+      "strict_min_version": "142.0"
     }
   }
 }
