@@ -18,5 +18,8 @@ colloquial.tsv was reviewed by hand from suggestions drawn from:
 - CC-CEDICT, for the Mandarin readings, https://www.mdbg.net/chinese/dictionary?page=cc-cedict,
   licensed Creative Commons Attribution-ShareAlike 4.0
 
-It is distributed under the Creative Commons Attribution-ShareAlike 4.0 license:
+colloquial-keep.txt is generated from colloquial.tsv, tools/colloquial_skip.tsv and the
+idioms and words in CC-CEDICT.
+
+Both are distributed under the Creative Commons Attribution-ShareAlike 4.0 license:
 http://creativecommons.org/licenses/by-sa/4.0/

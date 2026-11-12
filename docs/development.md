@@ -43,6 +43,18 @@ python tools/check_colloquial.py
 The word counts that rank the suggestions come from [words.hk](https://words.hk)
 (public domain) and the Hong Kong Cantonese Corpus (CC BY 4.0); they aren't shipped.
 
+A word or phrase that isn't listed whole gets tags for its parts instead: listed words,
+and single characters marked `part` in column 4 (不想 → "不 → 唔"). Mark a character
+`part` only if its swap holds inside almost any word. `extension/data/colloquial-keep.txt`
+lists the words that must stay whole: the skip list's words, CC-CEDICT idioms with a part
+character in them (愛不釋手), and CC-CEDICT words that contain a listed word (下午茶).
+Rebuild it after editing colloquial.tsv or the skip list, then run the lookup tests:
+
+```
+python tools/build_colloquial_keep.py path/to/sources
+node tools/test_colloquial.js
+```
+
 ## Rebuild the dictionary
 
 `extension/data/canto.txt` is generated from the CC-Canto release

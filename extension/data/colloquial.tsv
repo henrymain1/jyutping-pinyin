@@ -5,6 +5,9 @@
 #   2. Mandarin pinyin, numbered, no spaces; matched without tones, or with tones
 #      when it ends in "!". Empty matches any reading.
 #   3. Cantonese words: "漢字 jyut ping" with an optional "(note)", several joined by " | "
+#   4. Optional "part": a single character whose swap holds inside almost any word, so a
+#      word or phrase that isn't listed whole gets a tag for it (不想 → "不 → 唔").
+#      Words that must not be split this way are in colloquial-keep.txt.
 #
 # New rows are reviewed from tools/suggest_colloquial.py (see docs/development.md); words
 # reviewed and left out go in tools/colloquial_skip.tsv.
@@ -12,19 +15,19 @@
 # Licence: CC BY-SA 4.0, see LICENSE.txt.
 
 # Pronouns and pointing words
-是	shi4	係 hai6
-的	de5	嘅 ge3
-他,她,它	ta1	佢 keoi5
+是	shi4	係 hai6	part
+的	de5	嘅 ge3	part
+他,她,它	ta1	佢 keoi5	part
 他們,她們,它們,他们,她们,它们	ta1men5	佢哋 keoi5 dei6
 我們,我们,咱們,咱们		我哋 ngo5 dei6
 你們,你们	ni3men5	你哋 nei5 dei6
-這,这	zhe4	呢 ni1
+這,这	zhe4	呢 ni1	part
 這個,这个	zhe4ge5	呢個 ni1 go3
 這裡,這兒,这里,这儿		呢度 ni1 dou6
 這些,这些	zhe4xie1	呢啲 ni1 di1
 這樣,这样	zhe4yang4	噉樣 gam2 joeng2
 這麼,这么	zhe4me5	咁 gam3
-那	na4!	嗰 go2
+那	na4!	嗰 go2	part
 那個,那个	na4ge5	嗰個 go2 go3
 那裡,那兒,那里,那儿		嗰度 go2 dou6
 那些	na4xie1	嗰啲 go2 di1
@@ -40,13 +43,13 @@
 怎麼樣,怎么样	zen3me5yang4	點樣 dim2 joeng2
 怎麼辦,怎么办	zen3me5ban4	點算 dim2 syun3
 什麼時候,什么时候	shen2me5shi2hou5	幾時 gei2 si4
-多少	duo1shao5!	幾多 gei2 do1
+多少	duo1shao5	幾多 gei2 do1
 幹什麼,干什么	gan4shen2me5	做乜嘢 zou6 mat1 je5
 
 # Not, yes-or-no
-不	bu4	唔 m4
+不	bu4	唔 m4	part
 沒有,没有	mei2you3	冇 mou5
-沒,没	mei2	冇 mou5
+沒,没	mei2	冇 mou5	part
 不是	bu4shi4	唔係 m4 hai6
 不要	bu4yao4	唔好 m4 hou2 (don't)
 不用	bu4yong4	唔使 m4 sai2
@@ -61,13 +64,13 @@
 
 # Little words
 在	zai4	喺 hai2 (at, in)
-了	le5	咗 zo2 (after a verb)
+了	le5	咗 zo2 (after a verb)	part
 和	he2!	同 tung4
 跟	gen1	同 tung4
-也	ye3	都 dou1
-還,还	hai2	仲 zung6
+也	ye3	都 dou1	part
+還,还	hai2	仲 zung6	part
 還是,还是	hai2shi4	定係 ding6 hai6 (or, in questions)
-很	hen3	好 hou2
+很	hen3	好 hou2	part
 很多	hen3duo1	好多 hou2 do1
 一些	yi1xie1	一啲 jat1 di1
 有些	you3xie1	有啲 jau5 di1
@@ -91,15 +94,15 @@
 等一下	deng3yi1xia4	等陣 dang2 zan6
 
 # Doing things
-看	kan4	睇 tai2
+看	kan4!	睇 tai2	part
 說,说	shuo1	講 gong2
 說話,说话	shuo1hua4	講嘢 gong2 je5
-吃	chi1	食 sik6
-喝	he1!	飲 jam2
+吃	chi1	食 sik6	part
+喝	he1!	飲 jam2	part
 吃飯,吃饭	chi1fan4	食飯 sik6 faan6
 走	zou3	行 haang4 (walk)
 跑	pao3	走 zau2 (run)
-給,给	gei3	畀 bei2
+給,给	gei3	畀 bei2	part
 喜歡,喜欢	xi3huan5	鍾意 zung1 ji3
 睡覺,睡觉	shui4jiao4	瞓覺 fan3 gaau3
 穿	chuan1	着 zoek3
@@ -184,8 +187,8 @@
 鄰居,邻居	lin2ju1	街坊 gaai1 fong1
 服務員,服务员	fu2wu4yuan2	侍應 si6 jing3 | 伙記 fo2 gei3
 電影,电影	dian4ying3	戲 hei3
-哪	na3	邊 bin1
-哪	nei3	邊 bin1
+哪	na3	邊 bin1	part
+哪	nei3	邊 bin1	part
 上午	shang4wu3	上晝 soeng6 zau3
 下午	xia4wu3	下晝 haa6 zau3
 星期	xing1qi1	禮拜 lai5 baai3

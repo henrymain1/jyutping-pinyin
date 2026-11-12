@@ -173,7 +173,7 @@
       const loaded = new NS.Dictionary(res.text);
       NS.pinyin.setSyllables(loaded.syllables);
       NS.jyutping.setSyllables(loaded.jyutSyllables);
-      if (res.colloquial) colloquial = new NS.Colloquial(res.colloquial);
+      if (res.colloquial) colloquial = new NS.Colloquial(res.colloquial, res.colloquialKeep);
       return loaded;
     } catch (err) {
       console.warn('[Jyutping] Could not load the dictionary:', err);
@@ -380,7 +380,7 @@
     const content = [
       entry.kind, entry.hanzi, entry.sylls.join(' '), result.reading.join(' '),
       result.alts.map((a) => a.join(' ')).join('/'), result.corrected, result.guess, showOther,
-      everyday ? everyday.map((w) => w.hanzi).join('/') : '', settings.toneStyle, settings.showAlternates,
+      everyday ? everyday.map((w) => `${w.from ?? ''}${w.hanzi}`).join('/') : '', settings.toneStyle, settings.showAlternates,
     ].join('|');
     const key = `${content}|${showSource}|${settings.layout}`;
     Object.assign(entry, { everyday, showOther });
@@ -579,12 +579,18 @@
   }
 
   // One tag per everyday Cantonese word: the characters, their jyutping, and a short
-  // note where the word only covers one sense ("don't", "for a gift").
+  // note where the word only covers one sense ("don't", "for a gift"). A tag for part of
+  // a word or phrase starts with that part: 不 → 唔 m4.
   function appendEveryday(anno, words) {
     const box = document.createElement('jp-canto');
     for (const word of words) {
       const tag = document.createElement('jp-tag');
       tag.dataset.word = word.hanzi;
+      if (word.from) {
+        const from = document.createElement('jp-from');
+        from.textContent = `${word.from} →`;
+        tag.append(from);
+      }
       const hanzi = document.createElement('jp-hz');
       hanzi.textContent = word.hanzi;
       tag.append(hanzi);
@@ -687,6 +693,7 @@
       jyut-ping jp-tag:last-child { margin-right: 0; }
       jyut-ping jp-tag:hover { background: color-mix(in srgb, var(--jp-color) 22%, transparent); }
       jyut-ping jp-hz { margin-right: 0.3em; font-weight: 600; }
+      jyut-ping jp-from { margin-right: 0.3em; opacity: 0.65; }
       jyut-ping jp-note { margin-left: 0.35em; opacity: 0.65; font-size: 0.85em; }
       jyut-ping[data-tones="color"] jp-syl[data-tone="1"] { color: #d1495b; }
       jyut-ping[data-tones="color"] jp-syl[data-tone="2"] { color: #e07a1f; }

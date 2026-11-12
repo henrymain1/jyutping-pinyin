@@ -54,8 +54,10 @@ def main():
         if not line.strip() or line.startswith("#"):
             continue
         rows += 1
-        forms, pinyin, cantonese = (line.split("\t") + ["", ""])[:3]
+        forms, pinyin, cantonese, part = (line.split("\t") + ["", "", ""])[:4]
         where = f"line {number}"
+        if part and (part != "part" or any(len(form) != 1 for form in forms.split(","))):
+            problems.append(f"{where}: column 4 can only say \"part\", on a single-character row")
         sylls = SYL.findall(pinyin.rstrip("!").lower())
         for form in forms.split(","):
             key = (form, re.sub(r"\d", "", pinyin))

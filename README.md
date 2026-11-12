@@ -47,4 +47,4 @@ from [開放粵語詞典](https://kaifangcidian.com) (CC BY 3.0) and
 ## License
 
 MIT for the code. The dictionary data in `extension/data/canto.txt` is CC BY-SA 3.0, and
-the word list in `extension/data/colloquial.tsv` is CC BY-SA 4.0.
+the word lists in `extension/data/colloquial.tsv` and `colloquial-keep.txt` are CC BY-SA 4.0.

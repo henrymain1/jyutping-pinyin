@@ -8,7 +8,7 @@ const COMMAND_SETTINGS = { 'toggle-jyutping': 'showJyutping', 'toggle-pinyin': '
 const WEB_PAGES = ['http://*/*', 'https://*/*'];
 
 let dataText = null;
-let colloquialText = null;
+let colloquialTexts = null; // [word list, words kept whole]
 
 api.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
   const reply = (promise) => {
@@ -16,7 +16,9 @@ api.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
     return true; // keeps sendResponse alive for the async reply
   };
   if (msg?.type === 'jp:data') {
-    return reply(Promise.all([loadData(), loadColloquial()]).then(([text, colloquial]) => ({ text, colloquial })));
+    return reply(
+      Promise.all([loadData(), loadColloquial()]).then(([text, [colloquial, colloquialKeep]]) => ({ text, colloquial, colloquialKeep })),
+    );
   }
   // Just the syllable lists (a few KB), so a page can check for real pinyin or
   // jyutping before asking for the whole dictionary.
@@ -25,11 +27,10 @@ api.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
 });
 
 async function loadColloquial() {
-  if (colloquialText === null) {
-    const res = await fetch(api.runtime.getURL('data/colloquial.tsv'));
-    colloquialText = await res.text();
-  }
-  return colloquialText;
+  colloquialTexts ??= await Promise.all(
+    ['data/colloquial.tsv', 'data/colloquial-keep.txt'].map(async (path) => (await fetch(api.runtime.getURL(path))).text()),
+  );
+  return colloquialTexts;
 }
 
 function syllableLists(text) {
