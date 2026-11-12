@@ -249,7 +249,7 @@ def main(folder):
                 " | ".join(f"{c} {jyutping(mandarin, c)}" for *_, c, _ in best),
                 f"2.0:{old}" if old else f"3.0:{new}" if new else "",
                 evidence,
-                (meanings.get(mandarin) or entry["defs"])[:60],
+                " ".join((meanings.get(mandarin) or entry["defs"]).split())[:60],
             ],
         ))
     rows.sort(key=lambda r: r[0])

@@ -21,7 +21,7 @@ ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "extension" / "data"
 SYL = re.compile(r"[a-zv]+[1-6]")
 # Everyday readings CC-Canto lacks, checked against words.hk.
-EXTRA_JYUTPING = {"爸": {"baa4"}, "𨋢": {"lip1"}, "晚": {"maan1"}}
+EXTRA_JYUTPING = {"爸": {"baa4"}, "𨋢": {"lip1"}, "晚": {"maan1"}, "曱": {"gaat6"}, "甴": {"zaat2"}, "公": {"gung4"}}
 
 
 def load_canto():
