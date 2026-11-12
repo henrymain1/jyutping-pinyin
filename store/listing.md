@@ -108,9 +108,21 @@ unrelated purposes, and isn't used for creditworthiness or lending.
 
 ---
 
+## Version notes (Firefox "Release notes" when uploading a version)
+
+1.6.0:
+
+> - Many more everyday Cantonese words: about 1,900 now get a tag, up from 126 (小 → 細, 冷 → 凍, 草莓 → 士多啤梨).
+> - Words and phrases that aren't listed whole get tags for their parts: 不想 shows 不 → 唔.
+> - Works in Firefox for Android.
+> - New name, Jyutping ⇄ Pinyin. The panel has a power button for the current site, and the Cantonese words switch sits with the Pinyin and Jyutping switches.
+> - Fixed: "No Cantonese voice installed" showing even with a Cantonese voice installed.
+
+---
+
 ## Notes for reviewers (Firefox "Notes to Reviewer")
 
-> There is no build step: all JavaScript is hand-written and not minified, so no source code upload is needed. data/canto.txt is a plain-text dictionary generated from the CC-Canto release (CC BY-SA 3.0) by a Python script; I can provide the script on request.
+> There is no build step: all JavaScript is hand-written and not minified, so no source code upload is needed. The data files are plain text: data/canto.txt is a dictionary generated from the CC-Canto release (CC BY-SA 3.0); data/colloquial.tsv is a hand-reviewed list of everyday Cantonese words; data/colloquial-keep.txt is generated from that list and CC-CEDICT. The Python scripts that build them are in the public repository, https://github.com/henrymain1/jyutping-pinyin (tools/).
 >
 > The content script runs on all http/https pages but stays idle unless the page contains Chinese characters and text that parses as pinyin or jyutping; only then does it ask the background script for the dictionary. It sends nothing off the device.
 >
