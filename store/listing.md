@@ -110,19 +110,28 @@ unrelated purposes, and isn't used for creditworthiness or lending.
 
 ## Version notes (Firefox "Release notes" when uploading a version)
 
-1.6.0:
+1.6.0 (everything since 1.4.0, the last version on Firefox Add-ons):
 
-> - Many more everyday Cantonese words: about 1,900 now get a tag, up from 126 (小 → 細, 冷 → 凍, 草莓 → 士多啤梨).
-> - Words and phrases that aren't listed whole get tags for their parts: 不想 shows 不 → 唔.
+> New
+> - Cantonese words: where everyday Cantonese uses a different word, a small tag under the reading shows it (看 → 睇 tai2, 是 → 係 hai6, 草莓 → 士多啤梨). About 1,900 words are covered, and words or phrases that aren't listed whole get tags for their parts (不想: 不 → 唔). Click a tag to hear the word; turn tags on or off in the panel.
 > - Works in Firefox for Android.
-> - New name, Jyutping ⇄ Pinyin. The panel has a power button for the current site, and the Cantonese words switch sits with the Pinyin and Jyutping switches.
-> - Fixed: "No Cantonese voice installed" showing even with a Cantonese voice installed.
+> - New name: Jyutping ⇄ Pinyin.
+> - Panel: a power button turns the extension off for the current site.
+>
+> Faster
+> - Panel switches work the moment the panel opens (in Firefox they could take a few seconds), and turning pinyin on or off is instant.
+> - Readings appear sooner on pages that add their pinyin after loading, and the dictionary loads about three times faster.
+>
+> Fixed
+> - "No Cantonese voice installed" no longer shows when a Cantonese voice is installed.
 
 ---
 
 ## Notes for reviewers (Firefox "Notes to Reviewer")
 
 > There is no build step: all JavaScript is hand-written and not minified, so no source code upload is needed. The data files are plain text: data/canto.txt is a dictionary generated from the CC-Canto release (CC BY-SA 3.0); data/colloquial.tsv is a hand-reviewed list of everyday Cantonese words; data/colloquial-keep.txt is generated from that list and CC-CEDICT. The Python scripts that build them are in the public repository, https://github.com/henrymain1/jyutping-pinyin (tools/).
+>
+> New since 1.4.0: the everyday Cantonese words feature (the two colloquial data files) and Firefox for Android support (gecko_android, from 142). Android has no commands API, so the keyboard shortcut code checks for it before using it; the linter warning about "commands" on Android is expected.
 >
 > The content script runs on all http/https pages but stays idle unless the page contains Chinese characters and text that parses as pinyin or jyutping; only then does it ask the background script for the dictionary. It sends nothing off the device.
 >
